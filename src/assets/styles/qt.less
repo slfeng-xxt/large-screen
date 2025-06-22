@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'Alibaba PuHuiTi 2.0';
+  src: url('@/assets/fonts/Alibaba_PuHuiTi_2.0_55_Regular_55_Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Digital Numbers';
+  src: url('@/assets/fonts/Digital Numbers.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DIN-BlackItalic';
+  src: url('@/assets/fonts/DIN-BlackItalic.otf') format('OpenType');
+}
+
+// ===== 分割线样式 start =======
+.qtyn-line {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  flex-shrink: 0;
+  background: #30746f;
+  margin: 14px 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    flex-shrink: 0;
+    background: #0095ff;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: 0;
+    width: 5px;
+    height: 5px;
+    flex-shrink: 0;
+    background: #0095ff;
+  }
+}
+// ===== 分割线样式 end =======

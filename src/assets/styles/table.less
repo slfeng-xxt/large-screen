@@ -1,0 +1,134 @@
+.table-header {
+  .header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 25px;
+    line-height: 25px;
+    color: #fff;
+    text-align: center;
+    font-family: 'Alibaba PuHuiTi 2.0';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    background-color: transparent !important;
+    background-image: url('@/assets/images/table-header-bg.png');
+    background-size: 100% 100%;
+
+    .header-item {
+      text-align: center;
+    }
+  }
+}
+.table-rows {
+  .rows {
+    .row-item {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 25px !important;
+      margin-top: 8px;
+      backdrop-filter: blur(6px);
+
+      &:nth-child(odd) {
+        background-color: rgba(11, 40, 60, 0.4) !important;
+      }
+
+      &:nth-child(even) {
+        background-color: rgba(24, 64, 92, 0.4) !important;
+      }
+
+      &::before,
+      &::after {
+        position: absolute;
+        top: 0;
+        content: '';
+        width: 2px;
+        height: 25px;
+        flex-shrink: 0;
+        background-color: rgba(0, 255, 233, 0.4);
+        backdrop-filter: blur(6px);
+      }
+
+      &::before {
+        left: 0;
+      }
+
+      &::after {
+        right: 0;
+      }
+
+      .ceil {
+        width: 25%;
+        padding: 0 2px;
+        text-align: center;
+        color: #34e0e0;
+        font-family: 'Alibaba PuHuiTi 2.0';
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+        letter-spacing: 1.2px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-clamp: 1;
+      }
+    }
+  }
+}
+
+/* 空状态样式 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #999;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin: 20px;
+}
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+.empty-text {
+  font-size: 14px;
+  font-family: 'Alibaba PuHuiTi 2.0';
+  letter-spacing: 1px;
+}
+
+/* dv-scroll-board 样式自定义 */
+::v-deep(.dv-scroll-board) {
+  .table-header();
+  .table-rows();
+}
+
+// .set-2() {
+//   one: blue;
+//   two: green;
+//   three: red;
+// }
+// // 默认表格的样式
+// ::v-deep(.dv-scroll-board) {
+//   .table-header();
+//   .table-rows();
+
+//   .rows {
+//     each(.set-2(),.(@v, @k, @i) {
+//       .row-item:nth-child(@{i}) {
+//         background-color: @v !important;
+
+//         // &::before,
+//         // &::after {
+//         //   background-color: rgba(255, 0, 0, 0.4);
+//         // }
+//       }
+//       });
+//   }
+// }
