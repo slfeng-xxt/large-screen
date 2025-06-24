@@ -2,21 +2,23 @@
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 
 const props = defineProps({
-  columns: { // 表头
+  columns: {
+    // 表头
     type: Array,
-    required: true
+    required: true,
   },
-  data: { // 表格数据
+  data: {
+    // 表格数据
     type: Array,
-    required: true
+    required: true,
   },
   interval: {
     type: Number,
-    default: 2000 // 每行滚动间隔（毫秒）
+    default: 2000, // 每行滚动间隔（毫秒）
   },
   visibleRows: {
     type: Number,
-    default: 5 // 可见行数
+    default: 5, // 可见行数
   },
 })
 
@@ -44,10 +46,13 @@ onUnmounted(() => {
   stopScroll()
 })
 
-watch(() => [props.data, props.interval, props.visibleRows], () => {
-  startIndex.value = 0
-  startScroll()
-})
+watch(
+  () => [props.data, props.interval, props.visibleRows],
+  () => {
+    startIndex.value = 0
+    startScroll()
+  },
+)
 
 // 计算当前显示的行
 const visibleData = computed(() => {
@@ -58,7 +63,6 @@ const visibleData = computed(() => {
   }
   return result
 })
-
 </script>
 
 <template>
@@ -82,22 +86,13 @@ const visibleData = computed(() => {
           </slot>
         </div>
         <!-- 有数据时正常显示 -->
-        <div
-          v-else
-          class="row-item"
-          v-for="(row, rowIdx) in visibleData"
-          :key="rowIdx"
-        >
+        <div v-else class="row-item" v-for="(row, rowIdx) in visibleData" :key="rowIdx">
           <template v-if="$slots.row">
             <!-- 自定义整行 -->
             <slot name="row" :row="row" :rowIdx="rowIdx" :rowColumns="columns" />
           </template>
           <template v-else>
-            <div
-              class="ceil"
-              v-for="col in columns"
-              :key="col.key || col"
-            >
+            <div class="ceil" v-for="col in columns" :key="col.key || col">
               <template v-if="$slots.cell">
                 <!-- 自定义单元格 -->
                 <slot name="cell" :row="row" :col="col" :rowIdx="rowIdx" />
@@ -120,5 +115,4 @@ const visibleData = computed(() => {
   width: 100%;
   overflow: hidden;
 }
-
 </style>

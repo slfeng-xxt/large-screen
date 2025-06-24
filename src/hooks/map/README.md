@@ -20,6 +20,7 @@ await initMap('bmap', DEFAULT_CONFIG)
 ```
 
 **返回值：**
+
 - `map`: 地图实例的响应式引用
 - `BMapGL`: 百度地图库的响应式引用
 - `isLoading`: 加载状态
@@ -34,12 +35,15 @@ Marker 标记点 Hook，负责创建和管理地图标记点。
 ```javascript
 import { useMarker } from '@/utils/map-api.js'
 
-const { markers, createMarkerIcon, createInteractiveMarker, clearAllMarkers } = useMarker(map, BMapGL)
+const { markers, createMarkerIcon, createInteractiveMarker, clearAllMarkers } = useMarker(
+  map,
+  BMapGL,
+)
 
 // 创建普通 Marker
 const normalMarker = createMarkerIcon({
   image: '/path/to/image.png',
-  point: new BMapGL.value.Point(lng, lat)
+  point: new BMapGL.value.Point(lng, lat),
 })
 
 // 创建交互式 Marker（支持 hover 和 click 状态）
@@ -47,11 +51,12 @@ const interactiveMarker = createInteractiveMarker({
   image: '/path/to/normal.png',
   hoverImage: '/path/to/hover.png',
   pressedImage: '/path/to/pressed.png',
-  point: new BMapGL.value.Point(lng, lat)
+  point: new BMapGL.value.Point(lng, lat),
 })
 ```
 
 **返回值：**
+
 - `markers`: 所有 Marker 的数组
 - `createMarkerIcon`: 创建普通 Marker
 - `createInteractiveMarker`: 创建交互式 Marker
@@ -72,11 +77,12 @@ const tipOverlay = createTipOverlay({
   point: { lng: 116.403422, lat: 39.924984 },
   title: '位置标题',
   text: '位置描述信息',
-  imgSrc: '/path/to/image.png'
+  imgSrc: '/path/to/image.png',
 })
 ```
 
 **返回值：**
+
 - `overlays`: 所有覆盖物的数组
 - `createTipOverlay`: 创建提示覆盖物
 - `removeOverlay`: 移除指定覆盖物
@@ -102,6 +108,7 @@ enableScrollWheelZoom(true)
 ```
 
 **返回值：**
+
 - `setCenter`: 设置地图中心点
 - `setZoom`: 设置缩放级别
 - `enableScrollWheelZoom`: 启用/禁用滚轮缩放
@@ -129,12 +136,12 @@ const { createInteractiveMarker } = useMarker(map, BMapGL)
 
 onMounted(async () => {
   await initMap('bmap', DEFAULT_CONFIG)
-  
+
   createInteractiveMarker({
     image: '/src/assets/images/map/map-well-normal.png',
     hoverImage: '/src/assets/images/map/map-well-hover.png',
     pressedImage: '/src/assets/images/map/map-well-pressed.png',
-    point: new BMapGL.value.Point(DEFAULT_CONFIG.LONGITUDE, DEFAULT_CONFIG.LATITUDE)
+    point: new BMapGL.value.Point(DEFAULT_CONFIG.LONGITUDE, DEFAULT_CONFIG.LATITUDE),
   })
 })
 </script>
@@ -164,31 +171,31 @@ const { setCenter, setZoom, enableScrollWheelZoom } = useMapUtils(map, BMapGL)
 onMounted(async () => {
   try {
     await initMap('bmap', DEFAULT_CONFIG)
-    
+
     // 设置地图工具
     enableScrollWheelZoom(true)
-    
+
     // 创建多个 Marker
     const positions = [
       { lng: 116.403422, lat: 39.924984 },
-      { lng: 116.413422, lat: 39.934984 }
+      { lng: 116.413422, lat: 39.934984 },
     ]
-    
-    positions.forEach(pos => {
+
+    positions.forEach((pos) => {
       createInteractiveMarker({
         image: '/src/assets/images/map/map-well-normal.png',
         hoverImage: '/src/assets/images/map/map-well-hover.png',
         pressedImage: '/src/assets/images/map/map-well-pressed.png',
-        point: new BMapGL.value.Point(pos.lng, pos.lat)
+        point: new BMapGL.value.Point(pos.lng, pos.lat),
       })
     })
-    
+
     // 创建覆盖物
     createTipOverlay({
       point: { lng: 116.403422, lat: 39.924984 },
       title: '示例位置',
       text: '这是一个示例覆盖物',
-      imgSrc: '/path/to/image.png'
+      imgSrc: '/path/to/image.png',
     })
   } catch (err) {
     console.error('地图初始化失败:', err)
@@ -228,4 +235,4 @@ onUnmounted(() => {
 3. 将 `createdOverlay4Tip` 调用替换为 `useOverlay().createTipOverlay`
 4. 移除手动的事件监听器管理，Hooks 会自动处理
 
-原有的导出函数仍然可用，但建议使用新的 Hooks 模式。 
+原有的导出函数仍然可用，但建议使用新的 Hooks 模式。

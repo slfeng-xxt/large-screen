@@ -70,7 +70,7 @@ const highlightStart = computed(() => {
         <DigitalDigit :value="char" />
       </template>
       <template v-else>
-      {{ char }}
+        {{ char }}
       </template>
     </span>
   </div>

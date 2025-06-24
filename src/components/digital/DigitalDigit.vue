@@ -31,7 +31,7 @@ watch(
         currentIndex.value = idx
       }
     }
-  }
+  },
 )
 
 // 滚动完成后处理无限循环
@@ -61,7 +61,6 @@ const spanStyle = computed(() => ({
   height: `${config.height}px`,
   lineHeight: `${config.height}px`,
 }))
-
 </script>
 
 <template>

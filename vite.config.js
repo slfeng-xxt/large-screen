@@ -41,7 +41,7 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     build: {
-      outDir: 'dist',
+      outDir: './src/mock',
       manifest: true,
       rollupOptions: {
         output: {

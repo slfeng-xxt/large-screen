@@ -54,7 +54,9 @@ const handleDetail = (key) => {
           {{ descValue[item.key] }}<span>{{ item.unit }}</span>
         </div>
       </div>
-      <div class="base__item-desc">{{ item.desc }}<span @click="handleDetail(item.key)">详情</span></div>
+      <div class="base__item-desc">
+        {{ item.desc }}<span @click="handleDetail(item.key)">详情</span>
+      </div>
     </div>
   </div>
   <AnimalDialog v-model="dialogVisible">
@@ -157,9 +159,11 @@ const handleDetail = (key) => {
   font-weight: 600;
   border: none;
   border-radius: 22px;
-  box-shadow: 0 2px 8px rgba(0,255,233,0.12);
+  box-shadow: 0 2px 8px rgba(0, 255, 233, 0.12);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 .dialog-footer__btn:hover {
   background: linear-gradient(90deg, #00ffe9 0%, #35b8ad 100%);

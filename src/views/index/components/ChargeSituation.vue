@@ -10,7 +10,7 @@ const columns = [
   { key: 'name', title: '充电站名称' },
   { key: 'mode', title: '工作模式' },
   { key: 'power', title: '实时总功率' },
-  { key: 'num', title: '充电桩(忙/闲'}
+  { key: 'num', title: '充电桩(忙/闲' },
 ]
 
 const getList = () => {

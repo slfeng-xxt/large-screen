@@ -38,7 +38,7 @@ export const useInitMap = () => {
 
       // 加载完地图后执行回调
       map.value.addEventListener('tilesloaded', () => {
-        console.log('地图加载完成');
+        console.log('地图加载完成')
         isLoading.value = false
       })
 

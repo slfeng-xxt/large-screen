@@ -130,14 +130,13 @@ export const removeMarker = (map, marker) => {
   console.log('🚀 ~ removeMarker ~ overlayToRemove:', overlayToRemove)
   map.removeOverlay(overlayToRemove)
   console.log('🚀 ~ removeMarker ~ overlayToRemove:', map.getOverlays())
-  
 }
 
 // 自定义marker图标
 export const createMarker = (BMapGL, map, params) => {
   checkParams(params)
   const { image, hoverImage, presseedImage, point } = params
-  
+
   // 创建正常状态的marker
   let marker_normal = createMarkerIcon(BMapGL, map, { image, point })
   let marker_hover = null
@@ -186,17 +185,21 @@ export const createMarker = (BMapGL, map, params) => {
     // 创建pressed状态的marker
     marker_pressed = createMarkerIcon(BMapGL, map, { image: presseedImage, point })
     // 为pressed状态的marker添加点击事件，恢复hover状态
-    marker_pressed.addEventListener('click', () => {
-      console.log('🚀 ~ click: 恢复hover状态')
-      // 移除pressed状态的marker
-      removeMarker(map, marker_pressed)
-      marker_pressed = null
-      // 重新创建hover状态的marker
-      marker_hover = createMarkerIcon(BMapGL, map, { image: hoverImage, point })
-      // 重新绑定事件
-      marker_hover.addEventListener('mouseout', showNormal, { passive: true })
-      marker_hover.addEventListener('click', showPressed, { passive: true })
-    }, { passive: true })
+    marker_pressed.addEventListener(
+      'click',
+      () => {
+        console.log('🚀 ~ click: 恢复hover状态')
+        // 移除pressed状态的marker
+        removeMarker(map, marker_pressed)
+        marker_pressed = null
+        // 重新创建hover状态的marker
+        marker_hover = createMarkerIcon(BMapGL, map, { image: hoverImage, point })
+        // 重新绑定事件
+        marker_hover.addEventListener('mouseout', showNormal, { passive: true })
+        marker_hover.addEventListener('click', showPressed, { passive: true })
+      },
+      { passive: true },
+    )
   }
 
   // 初始绑定鼠标经过事件

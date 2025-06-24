@@ -32,24 +32,27 @@ export const useBasicMap = () => {
     BMapGL,
     isLoading,
     error,
-    destroyMap
+    destroyMap,
   }
 }
 
 // 示例2: 带Marker的地图
 export const useMapWithMarkers = () => {
   const { map, BMapGL, isLoading, error, initMap } = useInitMap()
-  const { markers, createMarkerIcon, createInteractiveMarker, clearAllMarkers } = useMarker(map, BMapGL)
+  const { markers, createMarkerIcon, createInteractiveMarker, clearAllMarkers } = useMarker(
+    map,
+    BMapGL,
+  )
 
   const setupMapWithMarkers = async () => {
     try {
       await initMap('bmap', DEFAULT_CONFIG)
-      
+
       // 创建普通Marker
       const point = new BMapGL.value.Point(DEFAULT_CONFIG.LONGITUDE, DEFAULT_CONFIG.LATITUDE)
       createMarkerIcon({
         image: '/src/assets/images/map/map-well-normal.png',
-        point
+        point,
       })
 
       // 创建交互式Marker
@@ -57,7 +60,7 @@ export const useMapWithMarkers = () => {
         image: '/src/assets/images/map/map-well-normal.png',
         hoverImage: '/src/assets/images/map/map-well-hover.png',
         pressedImage: '/src/assets/images/map/map-well-pressed.png',
-        point: new BMapGL.value.Point(DEFAULT_CONFIG.LONGITUDE + 0.01, DEFAULT_CONFIG.LATITUDE)
+        point: new BMapGL.value.Point(DEFAULT_CONFIG.LONGITUDE + 0.01, DEFAULT_CONFIG.LATITUDE),
       })
 
       console.log('地图和Marker设置成功')
@@ -76,7 +79,7 @@ export const useMapWithMarkers = () => {
     isLoading,
     error,
     markers,
-    clearAllMarkers
+    clearAllMarkers,
   }
 }
 
@@ -88,13 +91,13 @@ export const useMapWithOverlays = () => {
   const setupMapWithOverlays = async () => {
     try {
       await initMap('bmap', DEFAULT_CONFIG)
-      
+
       // 创建提示覆盖物
       createTipOverlay({
         point: { lng: DEFAULT_CONFIG.LONGITUDE, lat: DEFAULT_CONFIG.LATITUDE },
         title: '示例位置',
         text: '这是一个示例覆盖物，支持鼠标悬停效果',
-        imgSrc: 'https://bj.bcebos.com/v1/mapopen-pub-jsapigl/assets/images/gugong.png'
+        imgSrc: 'https://bj.bcebos.com/v1/mapopen-pub-jsapigl/assets/images/gugong.png',
       })
 
       console.log('地图和覆盖物设置成功')
@@ -113,7 +116,7 @@ export const useMapWithOverlays = () => {
     isLoading,
     error,
     overlays,
-    clearAllOverlays
+    clearAllOverlays,
   }
 }
 
@@ -127,15 +130,15 @@ export const useFullMap = () => {
   const setupFullMap = async () => {
     try {
       await initMap('bmap', DEFAULT_CONFIG)
-      
+
       // 设置地图工具
       enableScrollWheelZoom(true)
-      
+
       // 创建多个交互式Marker
       const markerPositions = [
         { lng: DEFAULT_CONFIG.LONGITUDE, lat: DEFAULT_CONFIG.LATITUDE },
         { lng: DEFAULT_CONFIG.LONGITUDE + 0.01, lat: DEFAULT_CONFIG.LATITUDE },
-        { lng: DEFAULT_CONFIG.LONGITUDE, lat: DEFAULT_CONFIG.LATITUDE + 0.01 }
+        { lng: DEFAULT_CONFIG.LONGITUDE, lat: DEFAULT_CONFIG.LATITUDE + 0.01 },
       ]
 
       markerPositions.forEach((pos) => {
@@ -143,7 +146,7 @@ export const useFullMap = () => {
           image: '/src/assets/images/map/map-well-normal.png',
           hoverImage: '/src/assets/images/map/map-well-hover.png',
           pressedImage: '/src/assets/images/map/map-well-pressed.png',
-          point: new BMapGL.value.Point(pos.lng, pos.lat)
+          point: new BMapGL.value.Point(pos.lng, pos.lat),
         })
       })
 
@@ -152,7 +155,7 @@ export const useFullMap = () => {
         point: { lng: DEFAULT_CONFIG.LONGITUDE, lat: DEFAULT_CONFIG.LATITUDE },
         title: '示例位置',
         text: '这是一个示例覆盖物，支持鼠标悬停效果',
-        imgSrc: 'https://bj.bcebos.com/v1/mapopen-pub-jsapigl/assets/images/gugong.png'
+        imgSrc: 'https://bj.bcebos.com/v1/mapopen-pub-jsapigl/assets/images/gugong.png',
       })
 
       console.log('完整地图功能设置成功')
@@ -177,6 +180,6 @@ export const useFullMap = () => {
     setCenter,
     setZoom,
     getCenter,
-    getZoom
+    getZoom,
   }
-} 
+}

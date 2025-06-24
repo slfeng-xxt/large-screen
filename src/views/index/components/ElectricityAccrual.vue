@@ -40,7 +40,7 @@ const getList = async () => {
     const res = await getEnergyCost()
     tableData.value = res.records
   } catch (error) {
-    console.log("获取数据失败",error)
+    console.log('获取数据失败', error)
   }
 }
 
