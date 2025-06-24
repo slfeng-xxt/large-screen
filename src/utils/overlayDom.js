@@ -1,6 +1,7 @@
 import { OVERLAY_ENUM, STATUS_ENUM } from '@/utils/enum'
 
 /**
+ * 废弃：新版本在 createOverlay 中直接创建DOM
  * @file overlayDom.js
  * @module overlayDom
  * @requires OVERLAY_ENUM
