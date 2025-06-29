@@ -14,12 +14,16 @@
 }
 
 // ===== 分割线样式 start =======
+
+@line-background: #506c83;
+@line-piont-background: #8aa2b5;
+
 .qtyn-line {
   position: relative;
   width: 100%;
   height: 1px;
   flex-shrink: 0;
-  background: #30746f;
+  background: @line-background;
   margin: 14px 0;
 
   &::before {
@@ -30,7 +34,7 @@
     width: 5px;
     height: 5px;
     flex-shrink: 0;
-    background: #0095ff;
+    background: @line-piont-background;
   }
 
   &::after {
@@ -41,7 +45,7 @@
     width: 5px;
     height: 5px;
     flex-shrink: 0;
-    background: #0095ff;
+    background: @line-piont-background;
   }
 }
 // ===== 分割线样式 end =======
