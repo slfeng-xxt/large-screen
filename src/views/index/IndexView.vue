@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watchEffect } from 'vue'
 import TimeCard from '@/views/index/components/TimeCard.vue'
 import WeatherCard from '@/views/index/components/WeatherCard.vue'
 // import MapCard from '@/views/index/components/MapCard.vue'
@@ -8,6 +9,25 @@ import ChargeSituation from '@/views/index/components/ChargeSituation.vue'
 import ElectricityAccrual from '@/views/index/components/ElectricityAccrual.vue'
 import OndutyStaff from '@/views/index/components/OndutyStaff.vue'
 import FooterCard from '@/views/index/components/FooterCard.vue'
+import CollapseSidebar from '@/views/index//components/CollapseSidebar.vue'
+import ScaleIndeicator from '@/components/scale/ScaleIndeicator.vue'
+import { useControlStore } from '@/stores/control.js'
+import { getMapScale } from '@/utils/map-api.js'
+
+const currentTask = ref(10)
+const chargingStation = ref(20)
+const wellDrilling = ref(50)
+const toggle = ref(true)
+const currentScale = ref(20000)
+
+watchEffect(() => {
+  const control = useControlStore()
+  currentScale.value = getMapScale(Math.round(control.currentZoom))
+})
+
+const toggleAll = () => {
+  toggle.value = !toggle.value
+}
 </script>
 
 <template>
@@ -15,11 +35,11 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
     <!-- 第一层: 地图 -->
     <!-- <map-card class="yn__map" /> -->
     <map-kb class="yn__map" />
-    <!-- 第二层: 蒙板 -->
-    <div class="yn__top-bg"></div>
-    <div class="yn__side-bg yn__side-left"></div>
-    <div class="yn__side-bg yn__side-right"></div>
-    <div class="yn__bottom-bg"></div>
+    <!-- 第二层: 蒙板, 换个图片覆盖？ -->
+    <div class="yn__cover-top"></div>
+    <div class="yn__cover-side yn__cover-left"></div>
+    <div class="yn__cover-side yn__cover-right"></div>
+    <div class="yn__cover-bottom"></div>
     <!-- 第三层: 标题,侧边,底部 -->
     <header class="yn__header">
       <div class="yn__header-info">
@@ -28,16 +48,36 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
       </div>
     </header>
     <main class="yn__main">
-      <div class="yn__main-float left-float">
-        <battery-info />
-        <charge-situation />
+      <transition name="slide-left">
+        <div class="yn__main-float left-float" v-show="toggle">
+          <battery-info />
+          <charge-situation />
+        </div>
+      </transition>
+      <transition name="slide-right">
+        <div class="yn__main-float right-float" v-show="toggle">
+          <electricity-accrual />
+          <onduty-staff />
+        </div>
+      </transition>
+      <transition name="slide-bottom">
+        <div class="yn__main-float bottom-float" v-show="toggle">
+          <footer-card />
+        </div>
+      </transition>
+      <!-- 调度信息 -->
+      <div class="dispatch-info" :class="{ collapsed: !toggle }">
+        <span class="dispatch-info__content">当前运输任务：{{ currentTask }}个</span>
+        <span class="dispatch-info__content content-margin">充电站：{{ chargingStation }}个</span>
+        <span class="dispatch-info__content">供电钻井：{{ wellDrilling }}个</span>
       </div>
-      <div class="yn__main-float right-float">
-        <electricity-accrual />
-        <onduty-staff />
+      <!-- 浮动控制按钮 -->
+      <div class="yn__main-float btn-float" :class="{ collapsed: !toggle }" @click="toggleAll">
+        <collapse-sidebar :toggle="toggle" />
       </div>
-      <div class="yn__main-float bottom-float">
-        <footer-card />
+      <!-- 浮动刻度尺 -->
+      <div class="yn__main-float scale-float" :class="{ collapsed: !toggle }">
+        <scale-indeicator :current="currentScale" />
       </div>
     </main>
     <footer class="yn__footer"></footer>
@@ -54,11 +94,11 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
   }
 
-  &__top-bg {
+  &__cover-top {
     position: absolute;
     top: 0;
     left: 0;
@@ -69,7 +109,7 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
     z-index: 6;
   }
 
-  &__bottom-bg {
+  &__cover-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -79,13 +119,14 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
     z-index: 6;
   }
 
-  &__side-bg {
+  &__cover-side {
     position: absolute;
     top: 0;
     z-index: 6;
+    pointer-events: none;
   }
 
-  &__side-left {
+  &__cover-left {
     left: 0;
     width: 22%;
     height: 100%;
@@ -93,7 +134,7 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
     background: linear-gradient(270deg, rgba(8, 33, 49, 0) 0%, #010c14 100%);
   }
 
-  &__side-right {
+  &__cover-right {
     right: 0;
     width: 22%;
     height: 100%;
@@ -125,7 +166,7 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
 
     &-float {
       position: absolute;
-      width: 330px;
+      width: 317px;
       height: 80vh;
       z-index: 10;
     }
@@ -139,12 +180,74 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
       top: 112px;
       right: 5px;
     }
+
     .bottom-float {
       bottom: 69px;
       left: 50%;
       transform: translateX(-50%);
       width: 60%;
       height: 111px;
+    }
+
+    .dispatch-info {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 114px;
+      left: 380px;
+      transition: left 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      z-index: 10;
+
+      &.collapsed {
+        left: 30px;
+      }
+
+      &__content {
+        color: #d8e3ee;
+        font-family: 'Alibaba PuHuiTi 2.0';
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 2.8px;
+      }
+      .content-margin {
+        margin: 12px 0;
+      }
+    }
+
+    .btn-float {
+      bottom: 70px;
+      left: 350px;
+      width: 46px;
+      height: 153px;
+      padding: 3px;
+      flex-shrink: 0;
+      border-radius: 100000000376832px;
+      background: rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: left 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      transform: scale(1);
+      z-index: 100;
+
+      &:hover {
+        transform: scale(1.05);
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+      &.collapsed {
+        left: 30px;
+      }
+    }
+
+    .scale-float {
+      top: 207px;
+      right: 350px;
+      width: 150px;
+      transition: right 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+      &.collapsed {
+        right: 30px;
+      }
     }
   }
 
@@ -158,5 +261,41 @@ import FooterCard from '@/views/index/components/FooterCard.vue'
     background-size: 100% 100%;
     z-index: 10;
   }
+}
+
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.5s ease;
+  transform: translateX(0);
+}
+
+.slide-left-enter-from,
+.slide-left-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.5s ease;
+  transform: translateX(0);
+}
+
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-bottom-enter-active,
+.slide-bottom-leave-active {
+  transition: all 0.5s ease;
+  transform: translateY(0);
+}
+
+.slide-bottom-enter-from,
+.slide-bottom-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
 }
 </style>

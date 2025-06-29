@@ -15,36 +15,6 @@ const hanldeSelect = (type) => {
   currentRadio.value = type
 }
 
-// The `config` object defines the structure and appearance of the energy cabin table, including headers, data, alignment, and styles.
-// const config = reactive({
-//   header: ['能量舱', '所在钻井', '功率', '剩余SOC'],
-//   data: [],
-//   index: false,
-//   align: ['center'],
-//   headerHeight: 25,
-//   // columnWidth: ['25%', '25%', '25%', '25%'],
-//   rowNum: 7,
-//   waitTime: 100000, // 调试开启
-// })
-
-// const getList = () => {
-//   getEnergyCabinList().then((res) => {
-//     // 判断soc值，设置不同的背景色
-//     config.data = res.records.map((item) => {
-//       let socClass = ''
-//       if (item.soc >= 30) {
-//         socClass = `<span style="color:#00FF73;">${item.soc}%</span>`
-//       } else {
-//         socClass = `<span style="color:#FF0404;">${item.soc}%</span>`
-//       }
-//       return {
-//         ...item,
-//         soc: socClass, // 添加一个新的属性用于设置样式
-//       }
-//     })
-//   })
-// }
-
 const tableData = ref([])
 const columns = [
   { key: 'name', title: '能量舱' },
@@ -96,13 +66,14 @@ onMounted(() => {
       <div class="battery__select-desk"></div>
     </div>
     <div class="qtyn-line"></div>
-    <!-- dv-scroll-board 组件不满足需求的实现 -->
-    <!-- <dv-scroll-board :config="config" class="battery__table" /> -->
-    <ScrollTable :columns="columns" :data="tableData" :visibleRows="5" class="battery__table">
+    <ScrollTable class="battery__table" :columns="columns" :data="tableData" :visible-rows="5">
       <template #row="{ row, rowIdx, rowColumns }">
-        <div :class="[row.soc < 30 ? 'row-item-err' : 'row-item-normal']" :key="rowIdx">
-          <div class="ceil" v-for="col in rowColumns" :key="col.key">
-            <span :class="[row.soc < 30 && col.key === 'soc' ? 'ceil-err' : '']"
+        <div
+          :class="['row-item row-item-right-bg', row.soc < 30 ? 'row-item-err' : 'row-item-normal']"
+          :key="rowIdx"
+        >
+          <div class="row-ceil" v-for="col in rowColumns" :key="col.key">
+            <span :class="['ceil', col.key === 'soc' ? 'ceil-soc' : '']"
               >{{ row[col.key || col] }}{{ col.unit ? col.unit : '' }}</span
             >
           </div>
@@ -151,43 +122,52 @@ onMounted(() => {
   &__table {
     width: 100%;
 
-    .row-item-err {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255, 0, 0, 0.4);
-
-      &::before,
-      &::after {
-        position: absolute;
-        top: 0;
-        content: '';
-        width: 2px;
-        height: 25px;
-        flex-shrink: 0;
-        background-color: rgba(255, 0, 0, 0.4);
+    .rows {
+      .row-item-err {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background:
+          linear-gradient(90deg, rgba(66, 47, 47, 0) 0%, rgba(179, 54, 54, 0.4) 100%),
+          rgba(66, 47, 47, 0.4) !important;
         backdrop-filter: blur(6px);
-      }
-      &::before {
-        left: 0;
+
+        &::before,
+        &::after {
+          position: absolute;
+          top: 0;
+          content: '';
+          width: 2px;
+          height: 25px;
+          flex-shrink: 0;
+          backdrop-filter: blur(6px);
+        }
+        &::before {
+          left: 0;
+          background: rgba(255, 0, 0, 0.4) !important;
+        }
+
+        &::after {
+          right: 0;
+          background: #f00 !important;
+        }
+
+        .ceil-soc {
+          color: #ff0404 !important;
+        }
       }
 
-      &::after {
-        right: 0;
-      }
+      .row-item-normal {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
 
-      .ceil-err {
-        color: red !important;
+        .ceil-soc {
+          color: #00ff73;
+        }
       }
-    }
-
-    .row-item-normal {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(11, 40, 60, 0.4);
     }
   }
 }
@@ -240,55 +220,4 @@ onMounted(() => {
   background-image: url('@/assets/images/charge/charge-wait-pressed.png');
   background-size: 100% 100%;
 }
-
-// less循环练习
-// 定义数组
-// @errarr: v-bind(dvErrorRows);
-@errarr: 2, 4, 6;
-// 定义数组长度
-@len: length(@errarr);
-
-// 循环函数
-.loop(@index) when (@index<=@len) {
-  // 获取当前索引的值
-  @value: extract(@errarr, @index);
-
-  .row-item:nth-child(@{value}) {
-    background-color: rgba(255, 0, 0, 0.4) !important;
-    // background: rgba(66, 47, 47, 0.40);
-
-    &::before,
-    &::after {
-      background-color: rgba(255, 0, 0, 0.4);
-    }
-  }
-  // 循环增加
-  .loop(@index+1);
-}
-
-// 定义数组
-@set: 1, 3, 4;
-
-.eachloop() {
-  each(@set, {
-      .row-item:nth-child(@{value}) {
-        background-color:  rgba(255, 0, 0, 0.4) !important;
-        // background: rgba(66, 47, 47, 0.40);
-
-        &::before,
-        &::after {
-          background-color: rgba(255, 0, 0, 0.4);
-        }
-      }
-      });
-}
-// 默认表格的样式
-// ::v-deep(.dv-scroll-board) {
-//   .table-header();
-//   .table-rows();
-//   .rows {
-//     .loop(1); // 方式一
-//     // .eachloop(); // 方式二
-//   }
-// }
 </style>

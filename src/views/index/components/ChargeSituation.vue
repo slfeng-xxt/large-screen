@@ -1,16 +1,97 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { getChargingStatus } from '@/api/index.js'
+import { useEcharts } from '@/hooks/echarts/useEcharts'
 import ScrollTable from '@/components/table/ScrollTable.vue'
 
-// 模拟数据
+const chartDom = ref(null)
+const option = {
+  tooltip: {
+    trigger: 'axis',
+  },
+  color: ['#6F87FE', '#6FFEC5'],
+  legend: {
+    right: '0',
+    icon: 'rect',
+    textStyle: {
+      color: '#D5E6EF',
+      fontSize: 12,
+      fontFamily: 'PingFang SC',
+    },
+    itemWidth: 12,
+    itemHeight: 2,
+    data: ['市电', '光伏'],
+  },
+  grid: {
+    top: '20%',
+    left: '10%',
+    right: '4%',
+    bottom: '10%',
+  },
+  xAxis: {
+    type: 'category',
+    axisLine: {
+      show: true,
+      lineStyle: {
+        color: '#909AA2',
+        width: 0.5,
+      },
+    },
+    axisLabel: {
+      show: true,
+      color: '#D5E6EF',
+    },
+    data: ['6.19', '6.20', '6.21', '6.22', '6.23', '6.24', '6.25'],
+  },
+  yAxis: {
+    type: 'value',
+    name: '充电电费（千元）',
+    axisLabel: {
+      show: true,
+      color: '#D5E6EF',
+    },
+    splitLine: {
+      show: true,
+      lineStyle: {
+        color: '#909AA2',
+        width: 0.5,
+      },
+    },
+    nameTextStyle: {
+      align: 'left',
+      color: '#909AA2',
+      fontSize: 12,
+      fontFamily: 'PingFang SC',
+      padding: [0, 0, 0, -20],
+    },
+  },
+  series: [
+    {
+      name: '市电',
+      type: 'line',
+      symbol: 'none', //去掉折线图中的节点
+      smooth: true, // 折线平滑
+      stack: 'Total',
+      data: [20, 32, 24, 34, 50, 30, 21],
+    },
+    {
+      name: '光伏',
+      type: 'line',
+      symbol: 'none',
+      smooth: true,
+      stack: 'Total',
+      data: [22, 48, 31, 24, 29, 33, 31],
+    },
+  ],
+}
+const { setChartOption } = useEcharts(chartDom)
+
 const tableData = ref([])
 
 const columns = [
-  { key: 'name', title: '充电站名称' },
+  { key: 'name', title: '充电站桩' },
   { key: 'mode', title: '工作模式' },
   { key: 'power', title: '实时总功率' },
-  { key: 'num', title: '充电桩(忙/闲' },
 ]
 
 const getList = () => {
@@ -21,19 +102,22 @@ const getList = () => {
 
 onMounted(() => {
   getList()
+  setChartOption(option)
 })
 </script>
 
 <template>
   <div class="charge">
     <img src="@/assets/images/title/title-charge.png" alt="charge info" />
+    <!-- 图表 -->
+    <div ref="chartDom" style="width: 317px; height: 170px"></div>
     <div class="qtyn-line"></div>
-    <!-- <dv-scroll-board :config="config" class="charge__table" /> -->
     <ScrollTable
       :columns="columns"
       :data="tableData"
       :interval="2000"
       :visibleRows="6"
+      side-highligth="row-item-right"
       class="charge__table"
     >
     </ScrollTable>

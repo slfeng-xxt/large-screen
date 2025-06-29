@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { getEnergyCost } from '@/api/index.js'
-import DigitalAmount from '@/components/digital/DigitalAmount.vue'
 import ScrollTable from '@/components/table/ScrollTable.vue'
 
 const amount = ref(1234.07)
@@ -15,17 +14,6 @@ const getStartAmount = () => {
     amount2.value += 1.1
   }, 1000)
 }
-
-// const config = reactive({
-//   header: ['钻井编号', '累计能耗（kWh）', '累计电费（元）'],
-//   data: [],
-//   index: false,
-//   align: ['center'],
-//   headerHeight: 25,
-//   columnWidth: ['130', '130', '130'],
-//   rowNum: 7,
-//   // waitTime: 100000, // 调试开启
-// })
 
 const tableData = ref([])
 
@@ -58,62 +46,58 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="electricity">
-    <img src="@/assets/images/title/title-electricty.png" alt="electricity info" />
-    <div class="electricity__card">
-      <div class="electricity__card-line--long"></div>
-      <div class="electricity__card-line--short"></div>
-      <div class="electricity__card-title">
-        <div class="title-left">
-          <div class="title-icon-city"></div>
-          <div class="title-name">市电</div>
-        </div>
-        <div class="title-right">
-          <span>总计能耗</span>
-          <span class="title-num">1000</span>
-          <span>kWh</span>
-        </div>
+  <div class="monitor">
+    <img src="@/assets/images/title/title-monitor.png" alt="monitor info" />
+    <!-- 告警totol -->
+    <div class="run-days">
+      <div class="run-days__total">
+        <div class="run-days__total-value">{{ 999 }}<span>天</span></div>
+        <div class="run-days__total-desc">已安全运行</div>
       </div>
-      <div class="electricity__card-calc">
-        <div class="calc-logo logo-city">
-          <div class="calc-logo-middle logo-middle-city">
-            <img src="@/assets/images/electric/electric-city-logo.png" alt="city logo" />
-          </div>
+      <div class="run-days__classify">
+        <div class="run-days__classify-item item item-normal">
+          一般告警<span>{{ 9 }}</span
+          >个
         </div>
-        <div class="calc-value">
-          <div class="calc-name">总计电费（元）</div>
-          <div class="calc-num">
-            <digital-amount :value="amount" />
-          </div>
+        <div class="run-days__classify-item item item-waring">
+          严重告警<span>{{ 9 }}</span
+          >个
         </div>
-      </div>
-      <div class="electricity__card-title clean-card">
-        <div class="title-left">
-          <div class="title-icon-clean"></div>
-          <div class="title-name">清洁能源</div>
-        </div>
-        <div class="title-right">
-          <span>总计能耗</span>
-          <span class="title-num">1000</span>
-          <span>kWh</span>
-        </div>
-      </div>
-      <div class="electricity__card-calc">
-        <div class="calc-logo logo-clean">
-          <div class="calc-logo-middle logo-middle-clean">
-            <img src="@/assets/images/electric/electric-clean-logo.png" alt="clean logo" />
-          </div>
-        </div>
-        <div class="calc-value">
-          <div class="calc-name">总计电费（元）</div>
-          <div class="calc-num">
-            <digital-amount :value="amount2" />
-          </div>
+        <div class="run-days__classify-item item item-error">
+          特大告警<span>{{ 9 }}</span
+          >个
         </div>
       </div>
     </div>
+    <!-- 运营监控 -->
+    <div class="monitor-list">
+      <div class="monitor-list__header">
+        <div class="header-left">
+          <span class="header-title">运营监控</span>
+        </div>
+        <div class="header-right">总计告警<span>3</span>条</div>
+      </div>
+      <div class="monitor-list__content">
+        <div class="content__item">请注意，油井41-6中8号电池剩余可用时间不足</div>
+        <div class="content__item">请注意，油井41-6出现长时间大功率作业</div>
+        <div class="content__item">请注意，当前无满电充电舱</div>
+      </div>
+    </div>
+    <!-- 设备监控 -->
+    <div class="monitor-list">
+      <div class="monitor-list__header">
+        <div class="header-left">
+          <span class="header-title">设备监控</span>
+        </div>
+        <div class="header-right">总计告警<span>3</span>条</div>
+      </div>
+      <div class="monitor-list__content">
+        <div class="content__item">请注意，PCS1当前温度过高</div>
+        <div class="content__item">请注意，10号能量舱运输过程中出现严重颠簸</div>
+        <div class="content__item">请注意，2号能量舱无法进行充电</div>
+      </div>
+    </div>
     <div class="qtyn-line"></div>
-    <!-- <dv-scroll-board :config="config" class="electricity__table" /> -->
     <ScrollTable
       :columns="columns"
       :data="tableData"
@@ -128,83 +112,11 @@ onUnmounted(() => {
 <style lang="less" scoped>
 @import url('@/assets/styles/table.less');
 
-.electricity {
+.monitor {
   margin-bottom: 13px;
 
   img {
     width: 100%;
-  }
-
-  &__card {
-    position: relative;
-    width: 100%;
-    margin-top: 18px;
-    padding: 12px 16px;
-    flex-shrink: 0;
-    border: 0.5px solid rgba(0, 255, 233, 0.1);
-    background:
-      radial-gradient(
-        46.6% 40.04% at 0% 100%,
-        rgba(38, 211, 198, 0.05) 0%,
-        rgba(38, 211, 198, 0) 100%
-      ),
-      radial-gradient(
-        60.05% 53.08% at 19.68% -13.86%,
-        rgba(38, 211, 198, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        87.17% 68.61% at 100% 0%,
-        rgba(38, 185, 211, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        67.87% 50.88% at 15.56% 0%,
-        rgba(38, 179, 211, 0.1) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        87.91% 67.53% at 100% 0%,
-        rgba(38, 165, 211, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      linear-gradient(180deg, rgba(21, 44, 45, 0.1) 31.82%, rgba(38, 153, 211, 0.1) 100%),
-      rgba(7, 45, 56, 0.2);
-    backdrop-filter: blur(6px);
-
-    &-line--long {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 76px;
-      height: 1px;
-      flex-shrink: 0;
-      background: #00ffe9;
-      z-index: 15;
-    }
-
-    &-line--short {
-      position: absolute;
-      top: -1px;
-      right: 0;
-      width: 9px;
-      height: 2px;
-      flex-shrink: 0;
-      background: #00ffe9;
-      z-index: 20;
-    }
-
-    &-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    &-calc {
-      display: flex;
-      align-items: center;
-    }
   }
 
   &__table {
@@ -218,105 +130,188 @@ onUnmounted(() => {
   }
 }
 
-.clean-card {
-  margin-top: 24px;
-}
-
-.title-left {
+.run-days {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0;
 
-  .title-icon-city {
-    width: 9px;
-    height: 9px;
-    background: #0084ff;
+  &__total {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 133px;
+    height: 133px;
+    background-image: url(@/assets/images/monitor/monitor-run-bg.png);
+    background-size: 100% 100%;
+
+    &-value {
+      color: #fff;
+      text-align: center;
+      text-shadow: 0px 0px 4px #fff;
+      font-family: 'Alibaba PuHuiTi 2.0';
+      font-size: 18px;
+      font-weight: 1000;
+      letter-spacing: 3.6px;
+      span {
+        font-size: 10px;
+        font-weight: 300;
+        letter-spacing: 2px;
+      }
+    }
+
+    &-desc {
+      color: #a6b9ca;
+      font-family: 'Alibaba PuHuiTi 2.0';
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 2.4px;
+    }
   }
 
-  .title-icon-clean {
-    width: 9px;
-    height: 9px;
-    background: #00ffb7;
+  &__classify {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    &-item {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 183px;
+      height: 32px;
+      flex-shrink: 0;
+      color: #7a8799;
+      font-family: 'Alibaba PuHuiTi 2.0';
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 2.8px;
+    }
+
+    .item > span {
+      font-size: 16px;
+      font-weight: 1000;
+      letter-spacing: 3.2px;
+    }
+
+    .item-normal {
+      background-image: url(@/assets/images/monitor/monitor-normal-bg.png);
+      background-size: 100% 100%;
+      border-right: 3px solid #1ca8ff;
+
+      span {
+        color: #1ca8ff;
+      }
+    }
+
+    .item-waring {
+      background-image: url(@/assets/images/monitor/monitor-waring-bg.png);
+      background-size: 100% 100%;
+      border-right: 3px solid #ffb71c;
+
+      span {
+        color: #ffb71c;
+      }
+    }
+    .item-error {
+      background-image: url(@/assets/images/monitor/monitor-error-bg.png);
+      background-size: 100% 100%;
+      border-right: 3px solid #ff1c1c;
+
+      span {
+        color: #ff1c1c;
+      }
+    }
+  }
+}
+
+.monitor-list {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-title {
+      color: #fff;
+      font-family: 'Alibaba PuHuiTi 2.0';
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 2.8px;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        margin-right: 6px;
+        background: #51658b;
+      }
+    }
+
+    .header-right {
+      color: #7da4c0;
+      font-family: 'Alibaba PuHuiTi 2.0';
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 2.4px;
+
+      span {
+        padding: 12px;
+        color: #dbf3ff;
+        font-family: DIN-BlackItalic;
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 3.2px;
+      }
+    }
   }
 
-  .title-name {
-    padding-left: 12px;
-    color: #fff;
-    font-family: 'Alibaba PuHuiTi 2.0';
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 2.8px;
-  }
-}
+  &__content {
+    padding: 6px 0;
 
-.title-right {
-  color: #7dbac0;
-  font-family: 'Alibaba PuHuiTi 2.0';
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 2.4px;
+    .content__item {
+      position: relative;
+      width: 100%;
+      height: 25px;
+      flex-shrink: 0;
+      padding: 4px 12px;
+      margin-bottom: 3px;
+      color: #f00;
+      font-family: 'Alibaba PuHuiTi 2.0';
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 1.2px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(66, 47, 47, 0) 0%, rgba(179, 54, 54, 0.4) 100%),
+        rgba(66, 47, 47, 0.4);
+      backdrop-filter: blur(6px);
 
-  .title-num {
-    padding: 0 12px;
-    color: #00ffe9;
-    font-family: DIN-BlackItalic;
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 3.2px;
-  }
-}
+      &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: ' ';
+        width: 2px;
+        height: 25px;
+        flex-shrink: 0;
+        background: #f00;
+        backdrop-filter: blur(6px);
+      }
 
-.calc-logo {
-  width: 52px;
-  height: 52px;
-  padding: 6px;
-  flex-shrink: 0;
-}
-
-.calc-logo-middle {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  padding: 8px;
-  backdrop-filter: blur(2px);
-
-  img {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-    filter: blur(0.75px);
-  }
-}
-
-.logo-city {
-  border: 1px solid #303b55;
-}
-
-.logo-middle-city {
-  border: 1px solid #345096;
-  background: rgba(12, 65, 65, 0.5);
-}
-
-.logo-clean {
-  border: 1px solid #33594f;
-}
-
-.logo-middle-clean {
-  border: 1px solid #30ba93;
-  background: rgba(12, 65, 65, 0.5);
-}
-
-.calc-value {
-  margin-left: 12px;
-  .calc-name {
-    margin-bottom: 7px;
-    color: #c6e5e9;
-    font-family: 'Alibaba PuHuiTi 2.0';
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 2.4px;
-  }
-  .calc-num {
-    height: 28px;
+      &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        content: ' ';
+        width: 2px;
+        height: 25px;
+        flex-shrink: 0;
+        background: rgba(255, 0, 0, 0.4);
+        backdrop-filter: blur(6px);
+      }
+    }
   }
 }
 </style>

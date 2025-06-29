@@ -39,11 +39,11 @@ const descValue = ref({
 
 const dialogVisible = ref(false)
 
-const handleDetail = (key) => {
-  if (key === 'completionRate') {
-    dialogVisible.value = true
-  }
-}
+// const handleDetail = (key) => {
+//   if (key === 'completionRate') {
+//     dialogVisible.value = true
+//   }
+// }
 </script>
 
 <template>
@@ -55,7 +55,8 @@ const handleDetail = (key) => {
         </div>
       </div>
       <div class="base__item-desc">
-        {{ item.desc }}<span @click="handleDetail(item.key)">详情</span>
+        {{ item.desc }}
+        <!-- <span v-if="item.key === 'reliablePower'" @click="handleDetail(item.key)">详情</span> -->
       </div>
     </div>
   </div>
@@ -113,7 +114,7 @@ const handleDetail = (key) => {
       }
     }
     &-desc {
-      color: #35b8ad;
+      color: #97a9c4;
       text-align: center;
       font-family: 'Alibaba PuHuiTi 2.0';
       font-size: 18px;
@@ -121,6 +122,7 @@ const handleDetail = (key) => {
       font-weight: 700;
       line-height: normal;
       letter-spacing: 3.6px;
+      white-space: nowrap;
     }
   }
 }

@@ -6,7 +6,7 @@
     <div class="staff__info">
       <div class="staff__info-position">值班经理</div>
       <div class="staff__info-desc">
-        <span>梁鹏岳</span>
+        <span class="staff-name">梁鹏岳</span>
         <span class="staff-line"></span>
         <img src="@/assets/images/staff/staff-phone.png" alt="phone logo" />
         <span class="staff-phone">152 1622 2865</span>
@@ -15,13 +15,12 @@
     <div class="qtyn-line"></div>
     <div class="staff__total">
       <div class="total-box">
-        <div class="total-box__line"></div>
         <!-- 巡检人员 -->
         <div class="total-box__item">
           <div class="total-box__item-icon">
             <img
               class="item-icon-img"
-              src="@/assets/images/staff/staff-item-1.png"
+              src="@/assets/images/staff/staff-inspection.png"
               alt="staff item"
             />
           </div>
@@ -35,7 +34,7 @@
           <div class="total-box__item-icon">
             <img
               class="item-icon-img"
-              src="@/assets/images/staff/staff-item-1.png"
+              src="@/assets/images/staff/staff-electrician.png"
               alt="staff item"
             />
           </div>
@@ -49,7 +48,7 @@
           <div class="total-box__item-icon">
             <img
               class="item-icon-img"
-              src="@/assets/images/staff/staff-item-1.png"
+              src="@/assets/images/staff/staff-dirver.png"
               alt="staff item"
             />
           </div>
@@ -63,7 +62,7 @@
           <div class="total-box__item-icon">
             <img
               class="item-icon-img"
-              src="@/assets/images/staff/staff-item-1.png"
+              src="@/assets/images/staff/staff-operation.png"
               alt="staff item"
             />
           </div>
@@ -86,7 +85,6 @@
 
   &__info {
     position: relative;
-    width: 90%;
     height: 52px;
     margin: 0 auto;
     margin-top: 12px;
@@ -122,12 +120,13 @@
       color: #fff;
       font-family: 'Alibaba PuHuiTi 2.0';
       font-size: 16px;
-      font-style: normal;
       font-weight: 500;
-      line-height: normal;
       letter-spacing: 1.6px;
       z-index: 13;
 
+      .staff-name {
+        white-space: nowrap;
+      }
       .staff-line {
         width: 2px;
         height: 12px;
@@ -141,85 +140,21 @@
         height: 16px;
         margin-right: 6px;
       }
+
+      .staff-phone {
+        white-space: nowrap;
+      }
     }
   }
 
   &__total {
     width: 100%;
-    height: 144px;
-    padding: 6px 8px;
-    border: 0.5px solid rgba(0, 255, 233, 0.1);
-    opacity: 0.5;
-    background:
-      radial-gradient(
-        46.6% 40.04% at 0% 100%,
-        rgba(38, 211, 198, 0.05) 0%,
-        rgba(38, 211, 198, 0) 100%
-      ),
-      radial-gradient(
-        60.05% 53.08% at 19.68% -13.86%,
-        rgba(38, 211, 198, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        87.17% 68.61% at 100% 0%,
-        rgba(38, 185, 211, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        67.87% 50.88% at 15.56% 0%,
-        rgba(38, 179, 211, 0.1) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        87.91% 67.53% at 100% 0%,
-        rgba(38, 165, 211, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      linear-gradient(180deg, rgba(21, 44, 45, 0.1) 31.82%, rgba(38, 153, 211, 0.1) 100%),
-      rgba(4, 29, 37, 0.2);
-    backdrop-filter: blur(6px);
   }
 
   .total-box {
-    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 100%;
-    height: 132px;
-    padding: 6px 16px;
-    flex-shrink: 0;
-    border: 0.5px solid rgba(0, 255, 233, 0.1);
-    background:
-      radial-gradient(
-        46.6% 40.04% at 0% 100%,
-        rgba(38, 211, 198, 0.05) 0%,
-        rgba(38, 211, 198, 0) 100%
-      ),
-      radial-gradient(
-        60.05% 53.08% at 19.68% -13.86%,
-        rgba(38, 211, 198, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        87.17% 68.61% at 100% 0%,
-        rgba(38, 185, 211, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        67.87% 50.88% at 15.56% 0%,
-        rgba(38, 179, 211, 0.1) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      radial-gradient(
-        87.91% 67.53% at 100% 0%,
-        rgba(38, 165, 211, 0.2) 0%,
-        rgba(8, 60, 56, 0) 100%
-      ),
-      linear-gradient(180deg, rgba(21, 44, 45, 0.1) 31.82%, rgba(38, 153, 211, 0.1) 100%),
-      rgba(2, 21, 27, 0.2);
-    backdrop-filter: blur(6px);
 
     &__line {
       position: absolute;
@@ -238,7 +173,14 @@
       height: 48px;
       padding: 6px;
       flex-shrink: 0;
-      border: 0.8px solid #2d7c75;
+      border: 0.8px solid #68788d;
+
+      &:nth-child(1) {
+        margin-bottom: 16px;
+      }
+      &:nth-child(2) {
+        margin-bottom: 16px;
+      }
 
       &-icon {
         display: flex;
@@ -248,8 +190,8 @@
         height: 36px;
         padding: 6px;
         flex-shrink: 0;
-        border: 0.6px solid #00ffe9;
-        background: rgba(14, 76, 71, 0.5);
+        border: 0.6px solid #7b8f9f;
+        background: rgba(62, 74, 91, 0.5);
         backdrop-filter: blur(2.5714285373687744px);
 
         img {
@@ -268,9 +210,7 @@
           text-align: center;
           font-family: 'Alibaba PuHuiTi 2.0';
           font-size: 16px;
-          font-style: normal;
           font-weight: 500;
-          line-height: normal;
           letter-spacing: 3.2px;
         }
 
@@ -279,9 +219,7 @@
           text-align: center;
           font-family: 'Alibaba PuHuiTi 2.0';
           font-size: 12px;
-          font-style: normal;
           font-weight: 300;
-          line-height: normal;
           letter-spacing: 2.4px;
         }
       }
