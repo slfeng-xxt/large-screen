@@ -1,5 +1,8 @@
 <script setup>
 import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
+import { useControlStore } from '@/stores/control.js'
+
+const control = useControlStore()
 
 const props = defineProps({
   modelValue: {
@@ -24,6 +27,7 @@ watch(
 
 const close = () => {
   visible.value = false
+  control.toggleShow(false)
   emit('update:modelValue', false)
 }
 

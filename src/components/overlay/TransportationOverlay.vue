@@ -12,22 +12,22 @@
     <!-- SOC进度条 -->
     <div class="progress-bar">
       <div class="progress" :style="{ width: progressSOC + '%' }" />
-      
+
       <!-- 10% 刻度 -->
       <div class="tick" :style="{ left: '10%' }">
-        <div class="tick-text" style="color: #FF0000">10%</div>
-        <div class="tick-line" style="background-color: #FF0000" />
+        <div class="tick-text" style="color: #ff0000">10%</div>
+        <div class="tick-line" style="background-color: #ff0000" />
       </div>
 
       <!-- 30% 刻度 -->
       <div class="tick" :style="{ left: '30%' }">
-        <div class="tick-text" style="color: #FF8000">30%</div>
-        <div class="tick-line" style="background-color: #FF8000" />
+        <div class="tick-text" style="color: #ff8000">30%</div>
+        <div class="tick-line" style="background-color: #ff8000" />
       </div>
 
       <!-- 预计到达刻度 -->
       <div class="tick arrival-tick" :style="{ left: expectedArriveProgressSoc + '%' }">
-        <div class="tick-line" style="background-color: #80FF00" />
+        <div class="tick-line" style="background-color: #80ff00" />
       </div>
 
       <!-- 进度条百分比文字 -->
@@ -86,16 +86,18 @@ defineExpose({
     if (newData.status !== undefined) status.value = newData.status
     if (newData.availableTime !== undefined) availableTime.value = newData.availableTime
     if (newData.progressSOC !== undefined) progressSOC.value = newData.progressSOC
-    if (newData.expectedArriveTime !== undefined) expectedArriveTime.value = newData.expectedArriveTime
-    if (newData.expectedArriveProgressSoc !== undefined) expectedArriveProgressSoc.value = newData.expectedArriveProgressSoc
+    if (newData.expectedArriveTime !== undefined)
+      expectedArriveTime.value = newData.expectedArriveTime
+    if (newData.expectedArriveProgressSoc !== undefined)
+      expectedArriveProgressSoc.value = newData.expectedArriveProgressSoc
     if (newData.zIndex !== undefined) zIndex.value = newData.zIndex
-  }
+  },
 })
 
 // 状态样式配置
 const statusStyles = {
   [STATUS_ENUM.normal]: {
-    background: 'linear-gradient(270deg, rgba(8, 70, 65, 0.35) 0%, #1D736C 100%)',
+    background: 'linear-gradient(270deg, rgba(8, 70, 65, 0.35) 0%, #44657C 100%)',
     textColor: '#00FF90',
   },
   [STATUS_ENUM.warning]: {
@@ -131,7 +133,7 @@ const handleArrowClick = () => {
   height: 157px;
   padding: 16px;
   border-radius: 12px;
-  border: 0.1px solid #FFF;
+  border: 0.1px solid #fff;
   backdrop-filter: blur(7.5px);
   left: 50%;
   top: 0;
@@ -145,7 +147,7 @@ const handleArrowClick = () => {
 
   .title {
     color: #fff;
-    font-family: "Alibaba PuHuiTi 2.0";
+    font-family: 'Alibaba PuHuiTi 2.0';
     font-size: 18px;
     font-weight: 1000;
     letter-spacing: 3.6px;
@@ -153,13 +155,13 @@ const handleArrowClick = () => {
 
   .battery-time {
     color: #fff;
-    font-family: "Alibaba PuHuiTi 2.0";
+    font-family: 'Alibaba PuHuiTi 2.0';
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 2.8px;
 
     .time {
-      color: #FF9D00;
+      color: #ff9d00;
     }
   }
 }
@@ -169,7 +171,7 @@ const handleArrowClick = () => {
   width: 300px;
   height: 26px;
   margin-top: 31px;
-  background-color: rgba(128, 128, 128, 0.20);
+  background-color: rgba(128, 128, 128, 0.2);
   border-radius: 9999px;
 
   .progress {
@@ -177,7 +179,7 @@ const handleArrowClick = () => {
     left: 0;
     top: 0;
     height: 26px;
-    background-color: #FF9D00;
+    background-color: #ff9d00;
     border-radius: 9999px;
     z-index: 1;
     transition: width 0.3s ease;
@@ -197,7 +199,7 @@ const handleArrowClick = () => {
 
     .tick-text {
       height: 20px;
-      font-family: "Alibaba PuHuiTi 2.0";
+      font-family: 'Alibaba PuHuiTi 2.0';
       font-size: 14px;
       font-weight: 400;
     }
@@ -220,8 +222,8 @@ const handleArrowClick = () => {
     position: absolute;
     right: 12px;
     top: 3px;
-    color: #FFF;
-    font-family: "Alibaba PuHuiTi 2.0";
+    color: #fff;
+    font-family: 'Alibaba PuHuiTi 2.0';
     font-size: 14px;
     font-weight: 400;
     z-index: 2;
@@ -250,13 +252,13 @@ const handleArrowClick = () => {
     .arrival-time {
       padding-left: 8px;
       color: #fff;
-      font-family: "Alibaba PuHuiTi 2.0";
+      font-family: 'Alibaba PuHuiTi 2.0';
       font-size: 14px;
       font-weight: 400;
       letter-spacing: 2.8px;
 
       .time {
-        color: #00FF90;
+        color: #00ff90;
       }
     }
   }
@@ -267,4 +269,4 @@ const handleArrowClick = () => {
     cursor: pointer;
   }
 }
-</style> 
+</style>

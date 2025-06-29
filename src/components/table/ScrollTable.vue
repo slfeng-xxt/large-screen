@@ -20,6 +20,10 @@ const props = defineProps({
     type: Number,
     default: 5, // 可见行数
   },
+  sideHighligth: {
+    type: String,
+    default: 'row-item-left', // 高亮位置，默认 row::before 高亮。 可选值 row-item-left, row-item-right
+  },
 })
 
 const startIndex = ref(0) // 当前显示的起始索引
@@ -86,23 +90,25 @@ const visibleData = computed(() => {
           </slot>
         </div>
         <!-- 有数据时正常显示 -->
-        <div v-else class="row-item" v-for="(row, rowIdx) in visibleData" :key="rowIdx">
-          <template v-if="$slots.row">
-            <!-- 自定义整行 -->
-            <slot name="row" :row="row" :rowIdx="rowIdx" :rowColumns="columns" />
-          </template>
-          <template v-else>
-            <div class="ceil" v-for="col in columns" :key="col.key || col">
-              <template v-if="$slots.cell">
-                <!-- 自定义单元格 -->
-                <slot name="cell" :row="row" :col="col" :rowIdx="rowIdx" />
-              </template>
-              <template v-else>
-                {{ row[col.key || col] }}
-              </template>
+        <template v-else>
+          <div v-for="(row, rowIdx) in visibleData" :key="rowIdx">
+            <template v-if="$slots.row">
+              <!-- 自定义整行 -->
+              <slot name="row" :row="row" :rowIdx="rowIdx" :rowColumns="columns" />
+            </template>
+            <div v-else :class="sideHighligth">
+              <div class="ceil" v-for="col in columns" :key="col.key || col">
+                <template v-if="$slots.cell">
+                  <!-- 自定义单元格 -->
+                  <slot name="cell" :row="row" :col="col" :rowIdx="rowIdx" />
+                </template>
+                <template v-else>
+                  {{ row[col.key || col] }}
+                </template>
+              </div>
             </div>
-          </template>
-        </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
