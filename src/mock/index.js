@@ -27,8 +27,8 @@ export default [
         message: '成功',
         'records|16': [
           {
-            name: '@integer(20, 41)号能量舱',
-            addr: '油41-@integer(1, 100)号',
+            name: '@integer(20, 41)号舱',
+            addr: '油41-@integer(1, 100)',
             power: '@integer(100, 200)',
             soc: '@integer(5, 60)',
           },
