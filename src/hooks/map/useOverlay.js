@@ -13,13 +13,13 @@ export const useOverlay = (mapInstance, BMapGLLib) => {
   // 创建带提示信息的覆盖物
   const createTipOverlay = (params) => {
     checkParams(params)
-    const { point, title, text, imgSrc, cardType = 'demo', opacity = 0.5, offsetY = -100 } = params
+    const { lng, lat, overlayType = 'demo', opacity = 0.5, offsetY = -140 } = params
 
     // 补充参数
-    params.zIndex = BMapGLLib.Overlay.getZIndex(point.lat)
+    params.zIndex = BMapGLLib.Overlay.getZIndex(lat)
 
     // 获取对应类型的覆盖物DOM方法
-    const customDom = cardTypeMap[cardType]
+    const customDom = cardTypeMap[overlayType]
 
     // 先生成 container
     const container = customDom(params)
@@ -27,10 +27,10 @@ export const useOverlay = (mapInstance, BMapGLLib) => {
     // 创建自定义覆盖物
     // const customOverlay = new BMapGLLib.CustomOverlay(customDom.bind(null, params), {})
     const customOverlay = new BMapGLLib.CustomOverlay(() => container, {
-      point: new BMapGLLib.Point(point.lng, point.lat),
+      point: new BMapGLLib.Point(lng, lat),
       opacity,
       offsetY,
-      properties: { title, text, imgSrc },
+      // properties: { title }, // demo原来的传递属性，可废弃
     })
 
     // 保存原始参数和container到覆盖物实例上

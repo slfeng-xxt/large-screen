@@ -5,10 +5,10 @@
  * @returns {Object} 地图工具方法
  */
 export const useMapUtils = (mapInstance, BMapGLLib) => {
-  // 设置地图中心点
-  const setCenter = (lng, lat) => {
+  // 设置地图中心点和缩放级别
+  const setCenterAndZoom = ({ lng, lat }, zoom) => {
     const point = new BMapGLLib.Point(lng, lat)
-    mapInstance.setCenter(point)
+    mapInstance.centerAndZoom(point, zoom)
   }
 
   // 设置缩放级别
@@ -22,8 +22,21 @@ export const useMapUtils = (mapInstance, BMapGLLib) => {
   }
 
   // 设置地图样式
-  const setMapStyle = (styleId) => {
+  const setMapStyleV2 = (styleId) => {
     mapInstance.setMapStyleV2({ styleId })
+  }
+
+  // 设置地图倾斜角度
+  const setTilt = (angle) => {
+    mapInstance.setTilt(angle)
+  }
+
+  // 销毁地图
+  const destroyMap = () => {
+    if (mapInstance) {
+      mapInstance.clearOverlays() // 清除所有覆盖物
+      mapInstance.destroy() // 销毁地图实例
+    }
   }
 
   // 获取地图边界
@@ -41,13 +54,27 @@ export const useMapUtils = (mapInstance, BMapGLLib) => {
     return mapInstance.getZoom()
   }
 
+  // 监听地图缩放事件
+  const onZoomChange = (callback) => {
+    mapInstance.addEventListener('zoomend', callback)
+  }
+
+  // 加载完地图后执行回调
+  const onTilesloaded = (callback) => {
+    mapInstance.addEventListener('tilesloaded', callback)
+  }
+
   return {
-    setCenter,
+    setCenterAndZoom,
     setZoom,
     enableScrollWheelZoom,
-    setMapStyle,
+    setMapStyleV2,
+    setTilt,
+    destroyMap,
     getBounds,
     getCenter,
     getZoom,
+    onZoomChange,
+    onTilesloaded,
   }
 }

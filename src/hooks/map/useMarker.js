@@ -23,12 +23,17 @@ export const useMarker = (mapInstance, BMapGLLib) => {
   // 创建单个Marker图标
   const createMarkerIcon = (params) => {
     checkParams(params)
-    const { image, point, size = new BMapGLLib.Size(58, 104) } = params
+    const { image, point, size = [58, 104], offset = [0, -40] } = params
+
+    const newSize = new BMapGLLib.Size(size[0], size[1]) // 设置图标大小
+    const newOffset = new BMapGLLib.Size(offset[0], offset[1]) // 设置偏移量，使图标底部对齐点位置
 
     // size: 图片大小
-    const myIcon = new BMapGLLib.Icon(image, size)
+    const myIcon = new BMapGLLib.Icon(image, newSize)
     // myIcon.setImageSize(size) // BMapGLLib.Icon方法中，图片大小默认为图片原始大小，需要手动设置
-    const marker = new BMapGLLib.Marker(point, { icon: myIcon })
+    
+    // TODO: 地图放大时点标注（marker）变大，缩小时变小
+    const marker = new BMapGLLib.Marker(point, { icon: myIcon, offset: newOffset })
 
     mapInstance.addOverlay(marker)
     markers.value.push(marker)
@@ -39,7 +44,8 @@ export const useMarker = (mapInstance, BMapGLLib) => {
   // 创建交互式Marker（支持hover和click状态）
   const createInteractiveMarker = (params) => {
     checkParams(params)
-    const { image, hoverImage, pressedImage, point, content } = params
+    const { image, hoverImage, pressedImage, lng, lat, trigger = true } = params
+    const point = new BMapGLLib.Point(lng, lat)
 
     let currentMarker = null
     let currentState = 'normal' // 'normal', 'hover', 'pressed'
@@ -109,12 +115,13 @@ export const useMarker = (mapInstance, BMapGLLib) => {
     }
 
     // 初始化正常状态
-    currentMarker = createMarkerIcon({ image, point })
-    currentMarker.addEventListener('mouseover', showHover, { passive: true })
+    currentMarker = createMarkerIcon({ point, ...params })
+    if (trigger) {
+      currentMarker.addEventListener('mouseover', showHover, { passive: true })
+    }
 
     // 创建信息窗口
-    // createInfoWindow({ content })
-    console.log('🚀 ~ content: ', content)
+    // createInfoWindow({ '123' })
 
     return {
       marker: currentMarker,
