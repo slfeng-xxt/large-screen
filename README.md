@@ -46,16 +46,18 @@ pnpm lint
 ## 部分组件
 
 - [x] 地图（百度，后续补充高德）
-- [x] 天气
-- [x] 滚动金额
-- [x] 滚动列表
-- [x] 弹窗
+- [x] 天气  WeatherCard.vue
+- [x] 滚动金额  digital/*.vue
+- [x] 滚动列表  ScrollTable.vue
+- [x] 弹窗  AnimalDialog.vue
+- [x] 地图响应刻度尺 ScaleIndeicator.vue
+- [x] 进度条 progress/*.vue
 
 ## 参考文档
 
 - [百度开放平台](https://lbsyun.baidu.com/apiconsole/authflow/authresult)
 - [百度地图](https://lbsyun.baidu.com/)
-- [百度地图JSAPI WebGL v1.0类参考手册](https://lbsyun.baidu.com/cms/jsapi/reference/jsapi_webgl_1_0.html)
+- [百度地图JSAPI WebGL v1.0类参考手册](https://mapopen-pub-jsapi.bj.bcebos.com/jsapi/reference/jsapi_webgl_1_0.html)
 - [百度国内天气查询](https://lbs.baidu.com/faq/api?title=webapi/weather/base)
 
 - [高德地图](https://lbs.amap.com/)
