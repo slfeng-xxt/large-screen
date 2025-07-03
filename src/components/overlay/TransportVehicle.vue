@@ -41,6 +41,24 @@ const statusStyles = {
     textColor: '#FF0000',
     content: '车辆发生故障',
   },
+  [STATUS_ENUM.arrived]: {
+    background: 'linear-gradient(270deg, rgba(4, 40, 29, 0.35) 0%, #2C745D 100%)',
+    borderBottom: '1px solid #3F7D6C',
+    textColor: '#00FF90',
+    content: '车辆已到达',
+  },
+  [STATUS_ENUM.exchange]: {
+    background: 'linear-gradient(270deg, rgba(4, 40, 29, 0.35) 0%, #2C745D 100%)',
+    borderBottom: '1px solid #3F7D6C',
+    textColor: '#00FF90',
+    content: '正在换电中',
+  },
+  [STATUS_ENUM.pull]: {
+    background: 'linear-gradient(270deg, rgba(4, 40, 29, 0.35) 0%, #2C745D 100%)',
+    borderBottom: '1px solid #3F7D6C',
+    textColor: '#00FF90',
+    content: '电池正在拉回',
+  },
 }
 
 // computed style
@@ -65,6 +83,7 @@ const mainContent = computed(() => {
 // handle arrow click
 const handleArrowClick = () => {
   console.log('右箭头被点击了')
+  control.changeStatus(status.value)
   control.toggleShow(true)
 }
 

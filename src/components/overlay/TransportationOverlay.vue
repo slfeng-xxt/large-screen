@@ -10,31 +10,10 @@
     </div>
 
     <!-- SOC进度条 -->
-    <div class="progress-bar">
-      <div class="progress" :style="{ width: progressSOC + '%' }" />
-
-      <!-- 10% 刻度 -->
-      <div class="tick" :style="{ left: '10%' }">
-        <div class="tick-text" style="color: #ff0000">10%</div>
-        <div class="tick-line" style="background-color: #ff0000" />
-      </div>
-
-      <!-- 30% 刻度 -->
-      <div class="tick" :style="{ left: '30%' }">
-        <div class="tick-text" style="color: #ff8000">30%</div>
-        <div class="tick-line" style="background-color: #ff8000" />
-      </div>
-
-      <!-- 预计到达刻度 -->
-      <div class="tick arrival-tick" :style="{ left: expectedArriveProgressSoc + '%' }">
-        <div class="tick-line" style="background-color: #80ff00" />
-      </div>
-
-      <!-- 进度条百分比文字 -->
-      <div class="progress-text">
-        剩余soc：<span class="soc-value" :style="{ color: socValueColor }">{{ progressSOC }}%</span>
-      </div>
-    </div>
+    <progress-soc
+      :progressSOC="progressSOC"
+      :expectedArriveProgressSoc="expectedArriveProgressSoc"
+    ></progress-soc>
 
     <!-- Footer -->
     <div class="footer">
@@ -58,6 +37,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { STATUS_ENUM } from '@/utils/enum'
+import { useControlStore } from '@/stores/control.js'
+import ProgressSoc from '@/components/progress/ProgressSoc.vue'
+
+const control = useControlStore()
 
 // Props 定义
 const props = defineProps({
@@ -117,12 +100,11 @@ const containerStyle = computed(() => ({
   transform: 'translate(-50%, -100%)',
 }))
 
-// soc-value 字体颜色
-const socValueColor = computed(() => (progressSOC.value > 85 ? '#fff' : '#FF9D00'))
-
 // 事件处理
 const handleArrowClick = () => {
   console.log('右箭头被点击了')
+  control.changeStatus(status.value)
+  control.toggleShow(true)
 }
 </script>
 
@@ -163,74 +145,6 @@ const handleArrowClick = () => {
     .time {
       color: #ff9d00;
     }
-  }
-}
-
-.progress-bar {
-  position: relative;
-  width: 300px;
-  height: 26px;
-  margin-top: 31px;
-  background-color: rgba(128, 128, 128, 0.2);
-  border-radius: 9999px;
-
-  .progress {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 26px;
-    background-color: #ff9d00;
-    border-radius: 9999px;
-    z-index: 1;
-    transition: width 0.3s ease;
-  }
-
-  .tick {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    position: absolute;
-    width: 28px;
-    height: 50px;
-    top: -24px;
-    z-index: 2;
-    transform: translateX(-50%);
-
-    .tick-text {
-      height: 20px;
-      font-family: 'Alibaba PuHuiTi 2.0';
-      font-size: 14px;
-      font-weight: 400;
-    }
-
-    .tick-line {
-      width: 2px;
-      height: 26px;
-    }
-
-    &.arrival-tick {
-      top: 0;
-
-      .tick-line {
-        height: 42px;
-      }
-    }
-  }
-
-  .progress-text {
-    position: absolute;
-    right: 12px;
-    top: 3px;
-    color: #fff;
-    font-family: 'Alibaba PuHuiTi 2.0';
-    font-size: 14px;
-    font-weight: 400;
-    z-index: 2;
-
-    // .soc-value {
-    //   /* color 由js动态控制 */
-    // }
   }
 }
 

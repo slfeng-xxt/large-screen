@@ -71,7 +71,12 @@ onBeforeUnmount(unlockScroll)
       <div v-if="visible" class="animal-dialog__mask" @click.self="close">
         <div class="animal-dialog__wrapper">
           <div class="animal-dialog__content">
-            <button class="animal-dialog__close" @click="close" aria-label="关闭弹窗">×</button>
+            <div class="content__header">
+              <div class="content__header-title">
+                <slot name="title">运输任务详情</slot>
+              </div>
+              <button class="content__header-close" @click="close" aria-label="关闭弹窗">×</button>
+            </div>
             <!-- 支持默认插槽和具名插槽 -->
             <slot>
               <slot name="content" />
@@ -84,7 +89,7 @@ onBeforeUnmount(unlockScroll)
   </teleport>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .animal-dialog__mask {
   position: fixed;
   z-index: 2000;
@@ -105,39 +110,55 @@ onBeforeUnmount(unlockScroll)
   height: 100vh;
 }
 .animal-dialog__content {
-  background: #fff;
-  border-radius: 10px;
-  min-width: 320px;
-  min-height: 160px;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 255, 233, 0.4);
+  background: linear-gradient(180deg, rgba(7, 45, 56, 0) 0%, rgba(39, 194, 211, 0.4) 100%), #072d38;
+  backdrop-filter: blur(12px);
+  min-width: 1364px;
+  min-height: 646px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
-  padding: 32px 24px;
+  padding: 32px 32px;
   position: relative;
   transition: box-shadow 0.2s;
-}
-.animal-dialog__close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.08);
-  color: #888;
-  font-size: 22px;
-  font-weight: bold;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    color 0.2s;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.animal-dialog__close:hover {
-  background: #f44336;
-  color: #fff;
+
+  .content__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-title {
+      color: #fff;
+      font-family: 'Alibaba PuHuiTi 2.0';
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: 4.8px;
+    }
+
+    &-close {
+      width: 24px;
+      height: 24px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.08);
+      color: #888;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      transition:
+        background 0.2s,
+        color 0.2s;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.08);
+        color: #fff;
+        transform: scale(1.5);
+      }
+    }
+  }
 }
 /* 从底部弹跳缩放动画 */
 .animal-dialog-bounce-bottom-enter-active {
