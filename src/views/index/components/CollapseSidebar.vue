@@ -34,9 +34,9 @@ const props = defineProps({
     flex-shrink: 0;
     background-color: rgba(0, 0, 0, 0.1);
     &:hover {
-        transform: scale(1.05);
-        background-color: rgba(256, 256, 256, 0.1);
-      }
+      transform: scale(1.05);
+      background-color: rgba(256, 256, 256, 0.1);
+    }
 
     img {
       width: 28px;

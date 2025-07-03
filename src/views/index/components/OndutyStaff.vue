@@ -6,7 +6,7 @@
     <div class="staff__info">
       <div class="staff__info-position">值班经理</div>
       <div class="staff__info-desc">
-        <span class="staff-name">梁鹏岳</span>
+        <span class="staff-name">梁工</span>
         <span class="staff-line"></span>
         <img src="@/assets/images/staff/staff-phone.png" alt="phone logo" />
         <span class="staff-phone">152 1622 2865</span>

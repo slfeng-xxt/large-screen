@@ -177,6 +177,8 @@ onMounted(() => {
   z-index: 15;
   width: 80px;
   height: 80px;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
 .radio-charge-normel {

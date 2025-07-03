@@ -26,7 +26,7 @@ const option = {
     top: '20%',
     left: '10%',
     right: '4%',
-    bottom: '10%',
+    bottom: '15%',
   },
   xAxis: {
     type: 'category',
@@ -110,7 +110,7 @@ onMounted(() => {
   <div class="charge">
     <img src="@/assets/images/title/title-charge.png" alt="charge info" />
     <!-- 图表 -->
-    <div ref="chartDom" style="width: 317px; height: 170px"></div>
+    <div ref="chartDom" style="width: 317px; height: 200px"></div>
     <div class="qtyn-line"></div>
     <ScrollTable
       :columns="columns"

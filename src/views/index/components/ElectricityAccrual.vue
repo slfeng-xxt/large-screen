@@ -102,7 +102,7 @@ onUnmounted(() => {
       :columns="columns"
       :data="tableData"
       :interval="2000"
-      :visibleRows="6"
+      :visibleRows="4"
       class="electricity__table"
     />
     <div class="qtyn-line"></div>

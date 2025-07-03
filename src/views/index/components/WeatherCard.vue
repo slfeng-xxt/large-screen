@@ -70,7 +70,7 @@ onMounted(() => {
     <span class="weather-wind">{{ weather.windDeg }}</span>
     <span>{{ weather.windSpeed }}</span>
   </div>
-  <dv-loading class="weather-loading" v-else></dv-loading>
+  <div v-else class="weather-loading">none</div>
 </template>
 
 <style lang="less" scoped>

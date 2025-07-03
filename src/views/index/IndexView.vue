@@ -2,7 +2,6 @@
 import { ref, watchEffect } from 'vue'
 import TimeCard from '@/views/index/components/TimeCard.vue'
 import WeatherCard from '@/views/index/components/WeatherCard.vue'
-// import MapCard from '@/views/index/components/MapCard.vue'
 import MapKb from '@/views/index/components/MapKb.vue'
 import BatteryInfo from '@/views/index/components/BatteryInfo.vue'
 import ChargeSituation from '@/views/index/components/ChargeSituation.vue'
@@ -33,13 +32,15 @@ const toggleAll = () => {
 <template>
   <div class="yn">
     <!-- 第一层: 地图 -->
-    <!-- <map-card class="yn__map" /> -->
     <map-kb class="yn__map" />
     <!-- 第二层: 蒙板, 换个图片覆盖？ -->
-    <div class="yn__cover-top"></div>
-    <div class="yn__cover-side yn__cover-left"></div>
-    <div class="yn__cover-side yn__cover-right"></div>
-    <div class="yn__cover-bottom"></div>
+    <div :class="['yn__cover-top', toggle ? '' : 'cover-top-collapsed']"></div>
+    <div class="yn__cover-side yn__cover-left" v-show="toggle"></div>
+    <div
+      :class="['yn__cover-side', 'yn__cover-right', toggle ? '' : 'cover-right-collapsed']"
+    ></div>
+    <div :class="['yn__cover-bottom', toggle ? '' : 'cover-bottom-collapsed']"></div>
+    <div :class="['yn__cover-focus', toggle ? '' : 'cover-focus-collapsed']"></div>
     <!-- 第三层: 标题,侧边,底部 -->
     <header class="yn__header">
       <div class="yn__header-info">
@@ -103,10 +104,17 @@ const toggleAll = () => {
     top: 0;
     left: 0;
     width: 100%;
-    height: 123px;
+    height: 159px;
     flex-shrink: 0;
-    background: linear-gradient(0deg, rgba(8, 33, 49, 0) 0%, #010c14 100%);
+    transition: background 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    background: linear-gradient(0deg, rgba(1, 3, 16, 0) 0%, #010310 100%);
     z-index: 6;
+    pointer-events: none;
+  }
+
+  .cover-top-collapsed {
+    height: 239px;
+    background: linear-gradient(0deg, rgba(1, 3, 16, 0) 0%, rgba(1, 3, 16, 0.4) 100%);
   }
 
   &__cover-bottom {
@@ -114,9 +122,15 @@ const toggleAll = () => {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 180px;
-    background: linear-gradient(180deg, rgba(8, 33, 49, 0) 0%, #010c14 100%);
+    height: 234px;
+    transition: background 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    background: linear-gradient(180deg, rgba(1, 3, 16, 0) 0%, #010310 100%);
     z-index: 6;
+    pointer-events: none;
+  }
+
+  .cover-bottom-collapsed {
+    background: linear-gradient(180deg, rgba(1, 3, 16, 0) 0%, rgba(1, 3, 16, 0.4) 100%);
   }
 
   &__cover-side {
@@ -128,18 +142,47 @@ const toggleAll = () => {
 
   &__cover-left {
     left: 0;
-    width: 22%;
+    width: 460px;
     height: 100%;
-    flex-shrink: 0;
     background: linear-gradient(270deg, rgba(8, 33, 49, 0) 0%, #010c14 100%);
   }
 
   &__cover-right {
+    position: absolute;
+    top: 0;
     right: 0;
-    width: 22%;
+    width: 532px;
     height: 100%;
-    flex-shrink: 0;
-    background: linear-gradient(90deg, rgba(8, 33, 49, 0) 0%, #010c14 100%);
+    transition: background 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    background: linear-gradient(90deg, rgba(1, 3, 16, 0) 0%, #010310 100%);
+    z-index: 6;
+  }
+
+  .cover-right-collapsed {
+    pointer-events: none;
+    width: 239px;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(1, 3, 16, 0) 0%, rgba(1, 3, 16, 0.4) 100%);
+  }
+
+  &__cover-focus {
+    position: absolute;
+    // 垂直居中
+    width: 1282px;
+    height: 791px;
+    left: 50%; /* 横向距左 50% 的位置 */
+    top: 50%; /* 纵向距上 50% 的位置 */
+    transform: translate(-50%, -50%); /* 水平、垂直都居中 */
+    z-index: 6;
+    pointer-events: none;
+    background-image: url('@/assets/images/focus-bg.png');
+    background-size: 100% 100%;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
+  .cover-focus-collapsed {
+    width: 1712px;
+    height: 913px;
   }
 
   &__header {
@@ -290,12 +333,12 @@ const toggleAll = () => {
 .slide-bottom-enter-active,
 .slide-bottom-leave-active {
   transition: all 0.5s ease;
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 .slide-bottom-enter-from,
 .slide-bottom-leave-to {
-  transform: translateY(100%);
+  transform: translateX(100%);
   opacity: 0;
 }
 </style>
