@@ -34,10 +34,15 @@ export const useInitMap = () => {
       })
 
       // 使用地图工具方法
-      const { setCenterAndZoom, setMapStyleV2, enableScrollWheelZoom, setTilt, onZoomChange, getZoom, onTilesloaded } = useMapUtils(
-        map.value,
-        BMapGL.value,
-      )
+      const {
+        setCenterAndZoom,
+        setMapStyleV2,
+        enableScrollWheelZoom,
+        setTilt,
+        onZoomChange,
+        getZoom,
+        onTilesloaded,
+      } = useMapUtils(map.value, BMapGL.value)
 
       // 设置地图中心点和缩放级别
       setCenterAndZoom({ lng: config.LONGITUDE, lat: config.LATITUDE }, config.ZOOM)
@@ -66,7 +71,6 @@ export const useInitMap = () => {
       })
 
       return map.value
-      
     } catch (err) {
       error.value = err.message
       console.error('地图初始化失败:', err)

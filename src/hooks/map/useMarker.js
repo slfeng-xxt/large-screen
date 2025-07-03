@@ -31,7 +31,7 @@ export const useMarker = (mapInstance, BMapGLLib) => {
     // size: 图片大小
     const myIcon = new BMapGLLib.Icon(image, newSize)
     // myIcon.setImageSize(size) // BMapGLLib.Icon方法中，图片大小默认为图片原始大小，需要手动设置
-    
+
     // TODO: 地图放大时点标注（marker）变大，缩小时变小
     const marker = new BMapGLLib.Marker(point, { icon: myIcon, offset: newOffset })
 
