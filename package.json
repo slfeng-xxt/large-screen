@@ -13,13 +13,13 @@
     "commitlint": "commitlint --config commitlint.config.cjs -e -V"
   },
   "dependencies": {
-    "@kjgl77/datav-vue3": "^1.7.4",
     "@vueuse/core": "^13.4.0",
     "axios": "^1.9.0",
     "echarts": "^5.4.3",
     "lodash-es": "^4.17.21",
     "mockjs": "^1.1.0",
     "pinia": "^3.0.1",
+    "v-scale-screen": "^2.3.0",
     "vue": "^3.5.13",
     "vue-baidu-map-3x": "^1.0.40",
     "vue-router": "^4.5.0"
@@ -37,7 +37,7 @@
     "less": "^4.3.0",
     "prettier": "3.5.3",
     "vite": "^6.2.4",
-    "vite-plugin-mock": "^3.0.2",
+    "vite-plugin-mock": "^2.9.6",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vite-plugin-zip-pack": "^1.2.4"
   }

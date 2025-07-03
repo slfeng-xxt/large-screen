@@ -1,11 +1,12 @@
 <script setup>
 import { RouterView } from 'vue-router'
+import VScaleScreen from 'v-scale-screen'
 </script>
 
 <template>
-  <dv-full-screen-container>
+  <v-scale-screen width="1920" height="1080">
     <RouterView />
-  </dv-full-screen-container>
+  </v-scale-screen>
 </template>
 
 <style scoped></style>

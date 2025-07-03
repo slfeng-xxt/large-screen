@@ -25,9 +25,11 @@ export default defineConfig(({ command, mode }) => {
       vue(),
       vueDevTools(),
       viteMockServe({
-        mockPath: 'mock',
+        mockPath: './src/mock',
         localEnabled: command === 'serve', // 仅在开发环境启用 Mock
         prodEnabled: command === 'build', // 在生产环境也启用 Mock
+        injectCode:
+          'import { setupProdMockServer } from "@/utils/mock-prod-server.js"; setupProdMockServer();',
       }),
       zipPack({
         inDir: 'dist',
@@ -41,13 +43,21 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     build: {
-      outDir: './src/mock',
+      outDir: 'dist',
       manifest: true,
+      // minify: 'terser', // 使用terser进行压缩
+      terserOptions: {
+        compress: {
+          drop_console: true, // 删除console
+          drop_debugger: true, // 删除debugger
+        },
+      },
       rollupOptions: {
         output: {
+          chunkFileNames: 'static/js/[name]-[hash].js',
+          entryFileNames: 'static/js/[name]-[hash].js',
+          assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
           manualChunks: {
-            'datav-vue3': ['@kjgl77/datav-vue3'],
-            'vue-baidu-map-3x': ['vue-baidu-map-3x'],
             echarts: ['echarts'],
             vue: ['vue', 'vue-router', 'pinia'],
           },

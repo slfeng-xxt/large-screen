@@ -4,6 +4,8 @@ import TransportationOverlay from '@/components/overlay/TransportationOverlay.vu
 import TransportVehicle from '@/components/overlay/TransportVehicle.vue'
 import TransArrived from '@/components/overlay/TransArrived.vue'
 import ChargingStationOverlay from '@/components/overlay/ChargingStationOverlay.vue'
+import WellOverlay from '@/components/overlay/WellOverlay.vue'
+import WellErrorOverlay from '@/components/overlay/WellErrorOverlay.vue'
 
 /**
  * @file createOverlayDom.js
@@ -91,6 +93,8 @@ export const cardTypeMap = {
   [OVERLAY_ENUM.transportVehicle]: createAppContainer.bind(null, TransportVehicle), // 创建运输任务车辆信息覆盖物的DOM元素
   [OVERLAY_ENUM.transArrived]: createAppContainer.bind(null, TransArrived), // 创建运输任务车辆到达覆盖物的DOM元素
   [OVERLAY_ENUM.chargingStation]: createAppContainer.bind(null, ChargingStationOverlay), // 创建充电站覆盖物的DOM元素
+  [OVERLAY_ENUM.wellOverlay]: createAppContainer.bind(null, WellOverlay), // 创建井上无运输任务正常状态覆盖物的DOM元素
+  [OVERLAY_ENUM.wellErrorOverlay]: createAppContainer.bind(null, WellErrorOverlay), // 创建井上无运输任务异常状态覆盖物的DOM元素
 }
 
 // 清理Vue应用实例
