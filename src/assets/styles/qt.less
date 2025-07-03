@@ -15,10 +15,7 @@
 
 // ===== 分割线样式 start =======
 
-@line-background: #506c83;
-@line-piont-background: #8aa2b5;
-
-.qtyn-line {
+.line-style(@line-background: #506c83, @line-piont-background: #8aa2b5) {
   position: relative;
   width: 100%;
   height: 1px;
@@ -47,5 +44,23 @@
     flex-shrink: 0;
     background: @line-piont-background;
   }
+}
+
+.qtyn-line {
+  .line-style();
+}
+
+@charge-bg: #58a47a;
+@charge-piont-background: #34e07c;
+
+.qtyn-charge-line {
+  .line-style(@charge-bg, @charge-piont-background);
+}
+
+@well-bg: #24887f;
+@well-piont-background: #00ffe9;
+
+.qtyn-well-line {
+  .line-style(@well-bg, @well-piont-background);
 }
 // ===== 分割线样式 end =======
