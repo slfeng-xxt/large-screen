@@ -11,6 +11,8 @@ export default defineConfig(({ command, mode }) => {
   console.log('🚀 ~ defineConfig ~ command, mode:', command, mode)
   return {
     server: {
+      host: '0.0.0.0',
+      port: 3000,
       proxy: {
         // 跨域代理百度天气API
         '/baiduApi': {
