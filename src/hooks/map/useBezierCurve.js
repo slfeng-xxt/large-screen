@@ -37,9 +37,9 @@ export const useBezierCurve = (mapInstance, BMapGLLib) => {
 
     const options = {
       strokeColor: strokeColor(taskStatus),
-      strokeWeight: 1,
+      strokeWeight: 3,
       strokeStyle: 'dashed',
-      strokeOpacity: 1,
+      strokeOpacity: 0.5,
     }
 
     const curve = new BMapGLLib.BezierCurve(linePath, linecontrolPoints, options)

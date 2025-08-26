@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue'
 import { BATTERY_STATUS_ENUM, BATTERY_STATUS_LAYOUT_ENUM } from '@/utils/enum.js'
 
 const props = defineProps({

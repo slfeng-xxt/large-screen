@@ -1,6 +1,4 @@
 <script setup>
-import { computed } from 'vue'
-
 const props = defineProps({
   progressSOC: { type: Number, default: 15 },
   expectedArriveProgressSoc: { type: Number, default: 0 },

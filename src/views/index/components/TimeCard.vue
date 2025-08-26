@@ -1,6 +1,4 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
-
 const currentTime = ref({
   hours: '00',
   minutes: '00',

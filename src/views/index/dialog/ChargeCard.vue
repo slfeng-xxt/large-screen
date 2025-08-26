@@ -46,7 +46,7 @@ const batteryList = [
 </script>
 
 <template>
-  <div class="card">
+  <div class="card charge-card">
     <div class="card__header charge-header">
       <div class="charge-header-info">
         <span class="card__header-title">充电站1</span>
@@ -74,6 +74,10 @@ const batteryList = [
 
 <style lang="less" scoped>
 @import './card.less';
+
+.charge-card {
+  margin-top: 32px;
+}
 
 .charge-header {
   justify-content: space-between;

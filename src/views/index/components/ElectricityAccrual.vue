@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
 import { getEnergyCost } from '@/api/index.js'
 import ScrollTable from '@/components/table/ScrollTable.vue'
 

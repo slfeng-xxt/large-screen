@@ -18,6 +18,41 @@ export default [
     },
   },
   {
+    url: '/mock/api/getBatteryCharge',
+    method: 'get',
+    response: () => {
+      return {
+        code: 200,
+        message: '成功',
+        'records|16': [
+          {
+            name: '@integer(20, 41)号舱',
+            addr: '油41-@integer(1, 100)',
+            power: '@integer(100, 200)',
+            time: '@integer(5, 60)',
+          },
+        ],
+      }
+    },
+  },
+  {
+    url: '/mock/api/getBatteryWait',
+    method: 'get',
+    response: () => {
+      return {
+        code: 200,
+        message: '成功',
+        'records|16': [
+          {
+            name: '@integer(20, 41)号舱',
+            status: '@pick(["运输中", "钻具充电站1号",])',
+            soc: '@integer(90, 100)',
+          },
+        ],
+      }
+    },
+  },
+  {
     url: '/mock/api/getChargingStatus',
     method: 'get',
     response: () => {

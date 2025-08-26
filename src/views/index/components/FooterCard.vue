@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import AnimalDialog from '@/components/dialog/AnimalDialog.vue'
 
 const descList = [
@@ -33,7 +32,7 @@ const descValue = ref({
   depth: '121,244',
   emissionReduction: '21,244',
   completionRate: '75',
-  reliablePower: '75',
+  reliablePower: '99',
   useRate: '70',
 })
 

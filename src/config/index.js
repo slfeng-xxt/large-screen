@@ -12,7 +12,7 @@ export const DEFAULT_CONFIG = {
   LATITUDE: 32.060255,
 
   // 地图缩放级别 Zoom
-  ZOOM: 10,
+  ZOOM: 11,
 
   // 最小缩放级别 Min Zoom
   MIN_ZOOM: 10,
@@ -21,7 +21,7 @@ export const DEFAULT_CONFIG = {
   MAX_ZOOM: 18,
 
   // 地图倾斜角度 Tilt
-  TILT_ANGLE: 0,
+  TILT_ANGLE: 10,
 
   // 天气 API Key
   WEATHER_API_KEY: 'f6BKK2dzG4Gq9FE13iyexAnGPtgAUqnR',

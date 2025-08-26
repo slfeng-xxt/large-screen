@@ -1,5 +1,4 @@
 import { OVERLAY_ENUM } from '@/utils/enum'
-import { createApp, h } from 'vue'
 import TransportationOverlay from '@/components/overlay/TransportationOverlay.vue'
 import TransportVehicle from '@/components/overlay/TransportVehicle.vue'
 import TransArrived from '@/components/overlay/TransArrived.vue'
@@ -54,24 +53,37 @@ const createDOM = (params) => {
 
 // 创建Vue组件实例
 const createAppContainer = (comp, params) => {
-  const container = document.createElement('div')
-  // 创建Vue应用实例
-  const app = createApp({
-    render() {
-      return h(comp, {
-        ...params,
-        ref: 'overlayRef',
-      })
-    },
-  })
+  try {
+    const container = document.createElement('div')
 
-  // 挂载Vue应用
-  app.mount(container)
+    // 创建Vue应用实例
+    const app = createApp({
+      setup() {
+        const instance = getCurrentInstance() // 获取当前实例
+        return { instance }
+      },
+      render() {
+        return h(comp, {
+          ...params,
+          ref: 'overlayRef',
+        })
+      },
+    })
 
-  // 保存app实例到container，以便后续清理
-  container._vueApp = app
+    // 挂载Vue应用
+    const root = app.mount(container)
 
-  return container
+    // 保存app实例到container，以便后续清理
+    container._vueApp = {
+      app,
+      instance_qt: root.instance,
+    }
+
+    return container
+  } catch (error) {
+    console.error('createAppContainer error:', error)
+    return document.createElement('div') // 返回空容器兜底
+  }
 }
 
 /**
@@ -99,8 +111,12 @@ export const cardTypeMap = {
 
 // 清理Vue应用实例
 export const cleanupOverlay = (container) => {
-  if (container && container._vueApp) {
-    container._vueApp.unmount()
+  if (!container) return
+  // 1. 先卸载Vue应用
+  if (container._vueApp && container._vueApp?.app) {
+    // console.log(container._vueApp.app, '=========清理Vue应用实例=========')
+    container._vueApp.app.unmount()
     delete container._vueApp
+    container = null // 清理容器引用
   }
 }

@@ -1,18 +1,16 @@
 <script setup>
-import { computed } from 'vue'
-
 const props = defineProps({
-  max: { type: Number, default: 20000 },
+  max: { type: Number, default: 10000 },
   min: { type: Number, default: 0 },
   current: { type: Number, default: 5000 },
-  marks: { type: Array, default: () => [0, 5000, 10000, 20000] },
-  labels: { type: Array, default: () => ['0km', '5km', '10km', '20km'] },
+  marks: { type: Array, default: () => [0, 2000, 5000, 10000] },
+  labels: { type: Array, default: () => ['0km', '2km', '5km', '10km'] },
   sections: {
     type: Array,
     default: () => [
-      { value: 5000, label: '低' },
-      { value: 10000, label: '中' },
-      { value: 20000, label: '高' },
+      { value: 2000, label: '低' },
+      { value: 5000, label: '中' },
+      { value: 10000, label: '高' },
     ],
   },
 })
@@ -73,6 +71,7 @@ const sectionLabelPositions = computed(() => {
       })
     }
   }
+  console.log('🚀 ~ sectionLabelPositions ~ result:', result)
   return result
 })
 

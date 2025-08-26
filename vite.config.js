@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import AutoImport from 'unplugin-auto-import/vite'
 import { viteMockServe } from 'vite-plugin-mock'
 import zipPack from 'vite-plugin-zip-pack'
 
@@ -11,8 +12,7 @@ export default defineConfig(({ command, mode }) => {
   console.log('🚀 ~ defineConfig ~ command, mode:', command, mode)
   return {
     server: {
-      host: '0.0.0.0',
-      port: 3000,
+      port: '3000',
       proxy: {
         // 跨域代理百度天气API
         '/baiduApi': {
@@ -26,6 +26,15 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       vue(),
       vueDevTools(),
+      AutoImport({
+        imports: ['vue', 'vue-router', 'pinia'],
+        dts: 'src/auto-imports.d.ts', // 生成 `auto-imports.d.ts` 文件
+        eslintrc: {
+          enabled: false, // 是否生成 eslint 插件配置文件
+          filepath: './.eslintrc-auto-import.json', // 配置文件路径
+          globalsPropValue: true, // 支持全局变量
+        },
+      }),
       viteMockServe({
         mockPath: './src/mock',
         localEnabled: command === 'serve', // 仅在开发环境启用 Mock

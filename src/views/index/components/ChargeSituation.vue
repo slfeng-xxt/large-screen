@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted, ref } from 'vue'
 import { getChargingStatus } from '@/api/index.js'
 import { useEcharts } from '@/hooks/echarts/useEcharts'
 import ScrollTable from '@/components/table/ScrollTable.vue'

@@ -35,7 +35,6 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
 import { STATUS_ENUM } from '@/utils/enum'
 import { useControlStore } from '@/stores/control.js'
 import ProgressSoc from '@/components/progress/ProgressSoc.vue'

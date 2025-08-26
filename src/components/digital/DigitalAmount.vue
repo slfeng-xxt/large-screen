@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue'
 import DigitalDigit from './DigitalDigit.vue'
 
 const props = defineProps({

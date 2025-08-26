@@ -1,5 +1,4 @@
 <script setup>
-import { ref, watchEffect } from 'vue'
 import TimeCard from '@/views/index/components/TimeCard.vue'
 import WeatherCard from '@/views/index/components/WeatherCard.vue'
 import MapKb from '@/views/index/components/MapKb.vue'
@@ -13,9 +12,9 @@ import ScaleIndeicator from '@/components/scale/ScaleIndeicator.vue'
 import { useControlStore } from '@/stores/control.js'
 import { getMapScale } from '@/utils/map-api.js'
 
-const currentTask = ref(10)
-const chargingStation = ref(20)
-const wellDrilling = ref(50)
+const currentTask = ref(4)
+const chargingStation = ref(1)
+const wellDrilling = ref(5)
 const toggle = ref(true)
 const currentScale = ref(20000)
 
@@ -90,6 +89,7 @@ const toggleAll = () => {
   position: relative;
   width: 100%;
   height: 100%;
+  user-select: none;
 
   &__map {
     position: absolute;
@@ -227,9 +227,9 @@ const toggleAll = () => {
     .bottom-float {
       bottom: 69px;
       left: 50%;
-      transform: translateX(-50%);
       width: 60%;
       height: 111px;
+      transform: translateX(-50%);
     }
 
     .dispatch-info {
@@ -238,6 +238,7 @@ const toggleAll = () => {
       position: absolute;
       top: 114px;
       left: 380px;
+      pointer-events: none;
       transition: left 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
       z-index: 10;
 
@@ -286,6 +287,8 @@ const toggleAll = () => {
       top: 207px;
       right: 350px;
       width: 150px;
+      height: auto;
+      pointer-events: none;
       transition: right 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
       &.collapsed {

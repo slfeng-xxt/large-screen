@@ -1,5 +1,4 @@
 <script setup>
-import { ref, computed } from 'vue'
 import { STATUS_ENUM } from '@/utils/enum'
 import { useControlStore } from '@/stores/control.js'
 
@@ -7,6 +6,8 @@ const control = useControlStore()
 
 // define props
 const props = defineProps({
+  linkman: { type: String, default: '' },
+  phone: { type: String, default: '' },
   status: { type: Number, default: STATUS_ENUM.normal },
   totalTransportationDistance: { type: Number, required: true },
   remainingtransportationDistance: { type: Number, required: true },
@@ -68,7 +69,7 @@ const containerStyle = computed(() => ({
 }))
 
 const headerStyle = computed(() => ({
-  color: statusStyles[status.value]?.borderBottom,
+  borderBottom: statusStyles[status.value]?.borderBottom,
 }))
 
 const mainDetailStyle = computed(() => ({
@@ -78,6 +79,10 @@ const mainDetailStyle = computed(() => ({
 // computed content
 const mainContent = computed(() => {
   return statusStyles[status.value]?.content
+})
+
+const isArrived = computed(() => {
+  return [STATUS_ENUM.arrived, STATUS_ENUM.exchange].includes(status.value)
 })
 
 // handle arrow click
@@ -108,9 +113,19 @@ defineExpose({
 
 <template>
   <div class="vehicle-overlay" :style="containerStyle">
-    <div class="header" :style="headerStyle">
+    <div class="header header-error" :style="headerStyle" v-if="status === STATUS_ENUM.error">
+      <div class="header__row">
+        <span>司机：</span>
+        <span class="header__value">{{ linkman }}</span>
+      </div>
+      <div class="header-row">
+        <span>电话：</span>
+        <span class="header__value">{{ phone }}</span>
+      </div>
+    </div>
+    <div class="header" :style="headerStyle" v-else>
       <span>总运输距离：</span>
-      <span class="header__distance">{{ totalTransportationDistance }}km</span>
+      <span class="header__value">{{ totalTransportationDistance }}km</span>
     </div>
     <div class="main">
       <div class="main__content">
@@ -125,12 +140,15 @@ defineExpose({
           @click.stop="handleArrowClick"
         />
       </div>
-      <div class="main__details">
+      <div class="main__details" v-if="!isArrived">
         <div class="remaining">
           <span>剩余：</span>
-          <span class="distance" :style="mainDetailStyle"
-            >{{ remainingtransportationDistance }}km</span
-          >
+          <span class="distance" :style="mainDetailStyle" v-if="status === STATUS_ENUM.error">
+            {{ remainingtransportationDistance }}/{{ totalTransportationDistance }}km
+          </span>
+          <span class="distance" :style="mainDetailStyle" v-else>
+            {{ remainingtransportationDistance }}km
+          </span>
         </div>
         <div class="line"></div>
         <span :style="mainDetailStyle">{{ arrivedTime }}</span>
@@ -149,9 +167,7 @@ defineExpose({
 
   .header {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 0;
+    padding: 12px;
     color: #73b196;
     text-align: center;
     font-family: 'Alibaba PuHuiTi 2.0';
@@ -159,10 +175,15 @@ defineExpose({
     font-weight: 300;
     letter-spacing: 2.8px;
 
-    &__distance {
+    &__value {
       color: #fff;
       font-weight: 500;
     }
+  }
+
+  .header-error {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .main {

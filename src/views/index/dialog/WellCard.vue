@@ -41,12 +41,15 @@ const props = defineProps({
       <div class="card__content-status" v-if="props.isShow">
         <div class="battery-info">
           <battery-icon battery-num="01" batter-status="warning"></battery-icon>
-          <div class="info-item">
-            功率：<span class="power">100kW</span>SOC：<span class="soc">27%</span>
+          <div class="info-box">
+            <div class="info-item">
+              功率：<span class="power">100kW</span>SOC：<span class="soc">27%</span>
+            </div>
+            <div class="info-item">电池剩余可用时间：<span class="time">2小时</span></div>
           </div>
         </div>
         <div class="battery-status">
-          <progress-soc progressSOC="27" expectedArriveProgressSoc="8"></progress-soc>
+          <progress-soc :progressSOC="27" :expectedArriveProgressSoc="8"></progress-soc>
         </div>
         <div class="footer">
           <div class="footer-left">
@@ -70,24 +73,36 @@ const props = defineProps({
   align-items: center;
   justify-content: space-between;
 
-  .info-item {
-    padding-left: 16px;
-    color: #5890a4;
-    font-size: 18px;
-    font-family: Alibaba PuHuiTi 2;
-    font-weight: 300;
-    letter-spacing: 1.8px;
-    word-wrap: break-word;
+  .info-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 
-    .power {
-      color: #34e0e0;
-      font-weight: 400;
-      padding-right: 16px;
-    }
+    .info-item {
+      padding-left: 16px;
+      color: #5890a4;
+      font-size: 18px;
+      font-family: Alibaba PuHuiTi 2;
+      font-weight: 300;
+      letter-spacing: 1.8px;
+      word-wrap: break-word;
 
-    .soc {
-      color: #ff9d00;
-      font-weight: 400;
+      .power {
+        color: #34e0e0;
+        font-weight: 400;
+        padding-right: 16px;
+      }
+
+      .soc {
+        color: #ff9d00;
+        font-weight: 400;
+      }
+
+      .time {
+        color: #00ff90;
+        font-weight: 400;
+      }
     }
   }
 }

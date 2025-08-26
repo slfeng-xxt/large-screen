@@ -1,5 +1,4 @@
 <script setup>
-import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useControlStore } from '@/stores/control.js'
 
 const control = useControlStore()
@@ -115,7 +114,7 @@ onBeforeUnmount(unlockScroll)
   background: linear-gradient(180deg, rgba(7, 45, 56, 0) 0%, rgba(39, 194, 211, 0.4) 100%), #072d38;
   backdrop-filter: blur(12px);
   min-width: 1364px;
-  min-height: 646px;
+  // min-height: 646px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
   padding: 32px 32px;
   position: relative;

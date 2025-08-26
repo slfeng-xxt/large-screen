@@ -1,6 +1,4 @@
 <script setup>
-import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
-
 const props = defineProps({
   columns: {
     // 表头

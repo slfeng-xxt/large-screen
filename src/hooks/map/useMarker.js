@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { checkParams } from '@/utils/map-api'
 /**
  * Marker标记点Hook
@@ -7,9 +6,10 @@ import { checkParams } from '@/utils/map-api'
  * @param {Object} BMapGLLib - 百度地图库
  * @returns {Object} Marker相关方法
  */
+let markers = []
 export const useMarker = (mapInstance, BMapGLLib) => {
-  const markers = ref([])
-  const infoWindow = ref(null)
+  // const markers = ref([])
+  // const infoWindow = ref(null)
 
   // 创建图文信息窗口
   // const createInfoWindow = (params) => {
@@ -36,7 +36,7 @@ export const useMarker = (mapInstance, BMapGLLib) => {
     const marker = new BMapGLLib.Marker(point, { icon: myIcon, offset: newOffset })
 
     mapInstance.addOverlay(marker)
-    markers.value.push(marker)
+    markers.push(marker)
 
     return marker
   }
@@ -44,7 +44,8 @@ export const useMarker = (mapInstance, BMapGLLib) => {
   // 创建交互式Marker（支持hover和click状态）
   const createInteractiveMarker = (params) => {
     checkParams(params)
-    const { image, hoverImage, pressedImage, lng, lat, trigger = true } = params
+    // pressedImage
+    const { image, hoverImage, lng, lat, trigger = true } = params
     const point = new BMapGLLib.Point(lng, lat)
 
     let currentMarker = null
@@ -57,12 +58,12 @@ export const useMarker = (mapInstance, BMapGLLib) => {
         removeMarker(currentMarker)
       }
 
-      currentMarker = createMarkerIcon({ image: hoverImage, point })
+      currentMarker = createMarkerIcon({ ...params, image: hoverImage, point })
       currentState = 'hover'
 
       // 绑定事件
       currentMarker.addEventListener('mouseout', showNormal, { passive: true })
-      currentMarker.addEventListener('click', showPressed, { passive: true })
+      // currentMarker.addEventListener('click', showPressed, { passive: true })
     }
 
     // 显示正常状态
@@ -72,7 +73,7 @@ export const useMarker = (mapInstance, BMapGLLib) => {
         removeMarker(currentMarker)
       }
 
-      currentMarker = createMarkerIcon({ image, point })
+      currentMarker = createMarkerIcon({ ...params, image, point })
       currentState = 'normal'
 
       // 重新绑定鼠标经过事件
@@ -80,39 +81,39 @@ export const useMarker = (mapInstance, BMapGLLib) => {
     }
 
     // 显示pressed状态
-    const showPressed = () => {
-      console.log('🚀 ~ click: 显示pressed状态')
-      if (currentMarker) {
-        removeMarker(currentMarker)
-      }
+    // const showPressed = () => {
+    //   console.log('🚀 ~ click: 显示pressed状态')
+    //   if (currentMarker) {
+    //     removeMarker(currentMarker)
+    //   }
 
-      currentMarker = createMarkerIcon({ image: pressedImage, point })
-      currentState = 'pressed'
+    //   currentMarker = createMarkerIcon({ image: pressedImage, point })
+    //   currentState = 'pressed'
 
-      // 打开信息窗口
-      if (infoWindow.value) {
-        mapInstance.openInfoWindow(infoWindow.value, point)
-      }
+    //   // 打开信息窗口
+    //   if (infoWindow.value) {
+    //     mapInstance.openInfoWindow(infoWindow.value, point)
+    //   }
 
-      // 点击恢复hover状态
-      currentMarker.addEventListener(
-        'click',
-        () => {
-          console.log('🚀 ~ click: 恢复hover状态')
-          if (currentMarker) {
-            removeMarker(currentMarker)
-          }
+    //   // 点击恢复hover状态
+    //   currentMarker.addEventListener(
+    //     'click',
+    //     () => {
+    //       console.log('🚀 ~ click: 恢复hover状态')
+    //       if (currentMarker) {
+    //         removeMarker(currentMarker)
+    //       }
 
-          currentMarker = createMarkerIcon({ image: hoverImage, point })
-          currentState = 'hover'
+    //       currentMarker = createMarkerIcon({ image: hoverImage, point })
+    //       currentState = 'hover'
 
-          // 重新绑定事件
-          currentMarker.addEventListener('mouseout', showNormal, { passive: true })
-          currentMarker.addEventListener('click', showPressed, { passive: true })
-        },
-        { passive: true },
-      )
-    }
+    //       // 重新绑定事件
+    //       currentMarker.addEventListener('mouseout', showNormal, { passive: true })
+    //       currentMarker.addEventListener('click', showPressed, { passive: true })
+    //     },
+    //     { passive: true },
+    //   )
+    // }
 
     // 初始化正常状态
     currentMarker = createMarkerIcon({ point, ...params })
@@ -147,6 +148,13 @@ export const useMarker = (mapInstance, BMapGLLib) => {
     marker.setAnimation(null)
   }
 
+  // 从本地数组中移除
+  const removeMarkerByhashCode = (hashcode) => {
+    const index = markers.findIndex((m) => m.hashCode === hashcode)
+    if (index > -1) {
+      markers.splice(index, 1)
+    }
+  }
   // 移除Marker
   const removeMarker = (marker) => {
     checkParams(marker)
@@ -156,6 +164,7 @@ export const useMarker = (mapInstance, BMapGLLib) => {
 
     // 检查marker是否在地图上
     if (!overlaysList.some((overlay) => overlay.hashCode === hashcode)) {
+      removeMarkerByhashCode(hashcode)
       console.warn('Marker does not exist on the map.')
       return
     }
@@ -165,18 +174,16 @@ export const useMarker = (mapInstance, BMapGLLib) => {
     mapInstance.removeOverlay(overlayToRemove)
 
     // 从本地数组中移除
-    const index = markers.value.findIndex((m) => m.hashCode === hashcode)
-    if (index > -1) {
-      markers.value.splice(index, 1)
-    }
+    removeMarkerByhashCode(hashcode)
   }
 
   // 清理所有markers
   const clearAllMarkers = () => {
-    markers.value.forEach((marker) => {
+    while (markers.length > 0) {
+      const marker = markers.pop()
       removeMarker(marker)
-    })
-    markers.value = []
+    }
+    // markers = []
   }
 
   return {

@@ -2,7 +2,10 @@
   <div class="progress-container">
     <div
       class="progress-stage"
-      :class="{ active: currentStage >= DIALOG_TASK_PROGRESS_ENUM.transportation }"
+      :class="{
+        active: currentStage >= DIALOG_TASK_PROGRESS_ENUM.transportation,
+        'active-animation': currentStage === DIALOG_TASK_PROGRESS_ENUM.transportation,
+      }"
     >
       <div class="stage-bar"></div>
       <div class="stage-label">
@@ -14,7 +17,10 @@
     </div>
     <div
       class="progress-stage"
-      :class="{ active: currentStage >= DIALOG_TASK_PROGRESS_ENUM.change }"
+      :class="{
+        active: currentStage >= DIALOG_TASK_PROGRESS_ENUM.change,
+        'active-animation': currentStage === DIALOG_TASK_PROGRESS_ENUM.change,
+      }"
     >
       <div class="stage-bar"></div>
       <div class="stage-label">
@@ -32,7 +38,13 @@
         车辆已到达
       </div>
     </div>
-    <div class="progress-stage" :class="{ active: currentStage >= DIALOG_TASK_PROGRESS_ENUM.pull }">
+    <div
+      class="progress-stage"
+      :class="{
+        active: currentStage >= DIALOG_TASK_PROGRESS_ENUM.pull,
+        'active-animation': currentStage === DIALOG_TASK_PROGRESS_ENUM.pull,
+      }"
+    >
       <div class="stage-bar"></div>
       <div class="stage-label">
         <div class="stage-circle"><div class="center-circle"></div></div>
@@ -176,31 +188,23 @@ defineProps({
     }
   }
 
-  @keyframes activeAnimation {
-    0% {
-      transform: scale(1);
+  .progress-stage.active {
+    .stage-bar {
+      background-color: #2ab7dd;
     }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
 
-  .progress-stage.active .stage-bar {
-    background-color: #2ab7dd;
-  }
-  .progress-stage.active .stage-circle {
-    background-color: #2e89a1;
-    animation: activeAnimation 2s infinite;
-    .center-circle {
-      background-color: #00cbff;
-      box-shadow: 0px 0px 4px #00cbff;
+    .stage-circle {
+      background-color: #2e89a1;
+
+      .center-circle {
+        background-color: #00cbff;
+        box-shadow: 0px 0px 4px #00cbff;
+      }
     }
-  }
-  .progress-stage.active .stage-name {
-    color: #00cbff;
+
+    .stage-name {
+      color: #00cbff;
+    }
   }
 
   .distance-label {
@@ -223,5 +227,21 @@ defineProps({
     margin: 0 16px;
     background: #1f674e;
   }
+}
+
+@keyframes active-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.active-animation .stage-circle {
+  animation: active-animation 2s infinite;
 }
 </style>

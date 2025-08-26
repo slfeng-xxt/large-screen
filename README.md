@@ -53,6 +53,21 @@ pnpm lint
 - [x] 地图响应刻度尺 ScaleIndeicator.vue
 - [x] 进度条 progress/*.vue
 
+- 部分功能介绍
+
+- 插件（unplugin-auto-import/vite）：自动导入 API，无需手动导入
+
+## 分支介绍
+
+- main：主分支
+- dev-1.0
+- dev-2.0
+- dev-2.1
+
+## 性能问题
+
+- dev-2.1版本添加动画效果后页面卡顿问题待优化
+
 ## 参考文档
 
 - [百度开放平台](https://lbsyun.baidu.com/apiconsole/authflow/authresult)

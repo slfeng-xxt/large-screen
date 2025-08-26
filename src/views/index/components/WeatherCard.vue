@@ -1,5 +1,4 @@
 <script setup>
-import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { DEFAULT_CONFIG } from '@/config/index.js'
 import { BAIDU_WEATHER_CODE } from '@/utils/bcode.js'

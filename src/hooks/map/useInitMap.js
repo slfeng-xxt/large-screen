@@ -1,4 +1,3 @@
-import { ref, onUnmounted } from 'vue'
 import { loadBMapScript } from '@/utils/bmap.js'
 import { useMapUtils } from '@/hooks/map/useMapUtils.js'
 import { useControlStore } from '@/stores/control.js'
@@ -31,6 +30,7 @@ export const useInitMap = () => {
       map.value = new BMapGLLib.Map(containerId, {
         minZoom: config.MIN_ZOOM,
         maxZoom: config.MAX_ZOOM,
+        enableWebglAntialias: false, // 关闭抗锯齿提升性能
       })
 
       // 使用地图工具方法

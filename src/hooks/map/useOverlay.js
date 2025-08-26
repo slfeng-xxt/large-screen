@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { checkParams } from '@/utils/map-api'
 import { cardTypeMap, cleanupOverlay } from '@/utils/createOverlayDom'
 /**

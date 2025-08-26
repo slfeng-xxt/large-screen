@@ -1,10 +1,10 @@
 <script setup>
-import { onMounted, onUnmounted, ref, watch, computed } from 'vue'
 import { OVERLAY_ENUM, STATUS_ENUM, DIALOG_TASK_PROGRESS_ENUM } from '@/utils/enum.js'
 import { DEFAULT_CONFIG } from '@/config/index.js'
 import { useControlStore } from '@/stores/control.js'
-import { useInitMap, useMarker, useOverlay, useBezierCurve, useUpdateOverlay } from '@/hooks/map'
-import { getMarkerPositions, getTransportRoutes, getTransportVehicles } from '@/utils/map-kb.js'
+// useBezierCurve
+import { useInitMap, useMarker, useOverlay, useUpdateOverlay, useFlyLineLayer } from '@/hooks/map'
+import { getMarkerPositions, getTransportRoutes } from '@/utils/map-kb.js'
 import AnimalDialog from '@/components/dialog/AnimalDialog.vue'
 import ProgressBar from '@/components/progress/ProgressBar.vue'
 import WellCard from '@/views/index/dialog/WellCard.vue'
@@ -39,10 +39,10 @@ const mapImages = import.meta.glob('@/assets/images/map/*.png', { eager: true })
 const markerPositions = getMarkerPositions(mapImages)
 
 // 模拟运输任务数据
-const transportationTask = getTransportRoutes()
+const transportationTask = getTransportRoutes(mapImages)
 
 // 模拟运输任务小车信息数据
-const transportationCar = getTransportVehicles(mapImages)
+// const transportationCar = getTransportVehicles(mapImages)
 
 // 获取当前弹窗进度详情参数
 const getDialogStage = () => {
@@ -70,6 +70,11 @@ const isShowWorkCard = computed(() => {
   return ![STATUS_ENUM.normal, STATUS_ENUM.pull].includes(dialogStatus.value)
 })
 
+// 控制弹窗中是否有电池拉回的情况
+const isBackWork = computed(() => {
+  return dialogStatus.value === STATUS_ENUM.pull
+})
+
 watch(
   () => control.isShow,
   (val) => {
@@ -87,50 +92,91 @@ watch(
     }
   },
 )
+const locationSize = {
+  small: [18, 30], // 小型地点标注
+  medium: [40, 70], // 中型地点标注
+  large: [58, 104], // 大型地点标注
+}
+
+const locationOffset = {
+  small: [0, -20], // 小型地点标注
+  medium: [0, -50], // 中型地点标注
+  large: [0, -60], // 大型地点标注
+}
+
+const carSize = {
+  small: [0, 0], // 小型小车标注
+  medium: [40, 40], // 中型小车标注
+  large: [50, 50], // 大型小车标注
+}
+
+const watchCurrentZoomFn = (zoom) => {
+  // 清除所有地点标注
+  const { clearAllMarkers, markers } = useMarker(map.value, BMapGL.value)
+  clearAllMarkers()
+  // 根据地图缩放级别显示或隐藏覆盖物
+  if (zoom >= 13) {
+    // 重新创建地点标注
+    createLocationMarker(locationSize.large, locationOffset.large)
+    creatCarMarker(carSize.large)
+    console.log('🚀 ~ markers:', markers)
+    // 显示所有覆盖物
+    Object.values(overlayRefs.value).forEach((overlay) => {
+      overlay.show()
+    })
+  } else {
+    // 重新创建地点标注
+    createLocationMarker(locationSize.small, locationOffset.small)
+    creatCarMarker(carSize.small)
+    // 隐藏所有覆盖物
+    Object.values(overlayRefs.value).forEach((overlay) => {
+      overlay.hide()
+    })
+  }
+}
 
 // 监听地图缩放
 watch(
   () => Math.round(control.currentZoom),
   (newVal) => {
     // todo: 根据zoom值调整地图标注和覆盖物显示哪些
-    // 根据地图缩放级别显示或隐藏覆盖物
-    if (newVal >= 13) {
-      // 显示所有覆盖物
-      Object.values(overlayRefs.value).forEach((overlay) => {
-        overlay.show()
-      })
-    } else {
-      // 隐藏所有覆盖物
-      Object.values(overlayRefs.value).forEach((overlay) => {
-        overlay.hide()
-      })
-    }
+    watchCurrentZoomFn(newVal)
   },
 )
 
-const createMarkerAndOverlay = () => {
+// 地点标注创建
+const createLocationMarker = (size = locationSize.small, offset = locationOffset.small) => {
   const { createInteractiveMarker } = useMarker(map.value, BMapGL.value)
-  const { createTipOverlay } = useOverlay(map.value, BMapGL.value)
-  const { createBezierCurve } = useBezierCurve(map.value, BMapGL.value)
 
   // 遍历 markerPositions 创建所有交互式Marker和覆盖物
   markerPositions.forEach((itemParams) => {
-    createInteractiveMarker(itemParams)
+    createInteractiveMarker({ ...itemParams, size, offset })
+  })
+}
 
+// 地点标注覆盖物创建
+const createLocationOverlay = () => {
+  const { createTipOverlay } = useOverlay(map.value, BMapGL.value)
+
+  markerPositions.forEach((itemParams) => {
     if (itemParams.overlayType) {
       // 创建覆盖物并保存引用
       const overlay = createTipOverlay(itemParams)
       // 默认隐藏覆盖物
       overlay.hide()
-
       // 保存覆盖物引用，以便后续更新
       if (itemParams.id) {
         overlayRefs.value[itemParams.id] = overlay
       }
     }
   })
+}
 
-  // 创建运输任务路线覆盖物
+// 任务路线创建
+const createTransportationTask = () => {
+  // const { createBezierCurve } = useBezierCurve(map.value, BMapGL.value)
+  const { createFlyLineLayer } = useFlyLineLayer(map.value)
+
   transportationTask.forEach((itemParams) => {
     const path = [
       {
@@ -142,18 +188,30 @@ const createMarkerAndOverlay = () => {
         lat: itemParams.endPoint.lat,
       },
     ]
-    const controlPoints = [itemParams.controlPoints]
+    // const controlPoints = [itemParams.controlPoints]
 
-    createBezierCurve(path, controlPoints, {
-      id: itemParams.id,
-      taskStatus: itemParams.taskStatus, // 任务状态
-    })
+    // createBezierCurve(path, controlPoints, {
+    //   id: itemParams.id,
+    //   taskStatus: itemParams.taskStatus, // 任务状态
+    // })
+    const { lng, lat } = createFlyLineLayer(path, itemParams)
+    itemParams.lng = lng
+    itemParams.lat = lat
   })
+}
+// 小车标注创建
+const creatCarMarker = (size = carSize.small) => {
+  const { createInteractiveMarker } = useMarker(map.value, BMapGL.value)
 
-  // 创建运输小车覆盖物
-  transportationCar.forEach((itemParams) => {
-    createInteractiveMarker({ ...itemParams, trigger: false, size: [50, 50], offset: [0, -70] })
+  transportationTask.forEach((itemParams) => {
+    createInteractiveMarker({ ...itemParams, trigger: false, size, offset: [0, -70] })
+  })
+}
 
+const createCarOverlay = () => {
+  const { createTipOverlay } = useOverlay(map.value, BMapGL.value)
+
+  transportationTask.forEach((itemParams) => {
     if (itemParams.overlayType) {
       // 创建覆盖物并保存引用
       const overlay = createTipOverlay(itemParams)
@@ -189,7 +247,7 @@ const startTest = () => {
       }
     })
     // 模拟更新运输任务小车的覆盖物数据
-    transportationCar.forEach((item) => {
+    transportationTask.forEach((item) => {
       if (!item.id || !overlayRefs.value[item.id]) return
       // 模拟新的数据——运输类型覆盖物
       if (item.overlayType && item.overlayType === OVERLAY_ENUM.transportVehicle) {
@@ -217,7 +275,11 @@ const stopTest = () => {
 onMounted(async () => {
   try {
     await initMap('bmap', DEFAULT_CONFIG) // 初始化地图
-    createMarkerAndOverlay() // 根据地图缩放级别显示覆盖物
+    createLocationMarker() // 根据地图缩放级别显示覆盖物
+    createLocationOverlay() // 创建地点标注覆盖物
+    createTransportationTask() // 创建运输任务路线
+    // creatCarMarker() // 创建小车标注
+    createCarOverlay() // 创建小车覆盖物
     startTest() // 开始模拟数据更新
   } catch (error) {
     console.error('地图部分功能加载失败:', error)
@@ -231,6 +293,9 @@ onUnmounted(() => {
   // 清除所有覆盖物
   const { clearAllOverlays } = useOverlay(map.value, BMapGL.value)
   clearAllOverlays()
+
+  const { destroy } = useFlyLineLayer(map.value)
+  destroy()
 
   // 销毁地图实例
   destroyMap()
@@ -260,7 +325,7 @@ onUnmounted(() => {
             :is-work="dialogStatus === STATUS_ENUM.exchange"
           ></work-card>
         </div>
-        <charge-card></charge-card>
+        <charge-card v-if="isBackWork"></charge-card>
       </template>
     </animal-dialog>
   </div>
@@ -313,7 +378,7 @@ onUnmounted(() => {
 .content-main {
   display: flex;
   justify-content: space-between;
+  gap: 32px;
   margin-top: 84px;
-  margin-bottom: 32px;
 }
 </style>

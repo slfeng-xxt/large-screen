@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import { DEFAULT_CONFIG } from '@/config/index.js'
 
 const center = ref({ lng: DEFAULT_CONFIG.LONGITUDE, lat: DEFAULT_CONFIG.LATITUDE })

@@ -34,7 +34,7 @@ const props = defineProps({
         />
       </div>
       <div class="work-change">
-        <div class="work-change__info">电池01 更换为 电池08</div>
+        <div class="work-change__info">电池01 更换为 电池06</div>
         <div class="work-change__status" v-if="props.isWork">作业正常</div>
       </div>
       <div class="work-oprator">

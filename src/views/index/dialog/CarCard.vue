@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue'
 import BatteryIcon from '@/components/icon/BatteryIcon.vue'
 import { BATTERY_STATUS_LAYOUT_ENUM } from '@/utils/enum.js'
 
@@ -17,7 +16,7 @@ const subTitle = computed(() => {
 </script>
 
 <template>
-  <div class="card">
+  <div class="card car-card">
     <div class="card__header">
       <span class="card__header-title">运输车辆</span>
       <div class="splie-line"></div>
@@ -58,6 +57,10 @@ const subTitle = computed(() => {
 
 <style lang="less" scoped>
 @import './card.less';
+
+.car-card {
+  flex: 1;
+}
 
 .car-content {
   margin-top: 35px;
