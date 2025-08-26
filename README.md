@@ -53,7 +53,7 @@ pnpm lint
 - [x] 地图响应刻度尺 ScaleIndeicator.vue
 - [x] 进度条 progress/*.vue
 
-- 部分功能介绍
+## 部分功能介绍
 
 - 插件（unplugin-auto-import/vite）：自动导入 API，无需手动导入
 
