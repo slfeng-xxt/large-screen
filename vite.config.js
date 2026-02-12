@@ -6,6 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
 import { viteMockServe } from 'vite-plugin-mock'
 import zipPack from 'vite-plugin-zip-pack'
+import autoprefixer from 'autoprefixer'
 
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -34,6 +35,9 @@ export default defineConfig(({ command, mode }) => {
           filepath: './.eslintrc-auto-import.json', // 配置文件路径
           globalsPropValue: true, // 支持全局变量
         },
+      }),
+      autoprefixer({
+        overrideBrowserslist: ['> 1%', 'last 2 versions', 'not dead'],
       }),
       viteMockServe({
         mockPath: './src/mock',
