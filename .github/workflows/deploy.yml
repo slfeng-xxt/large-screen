@@ -44,6 +44,13 @@ jobs:
         run: pnpm build
         # 构建产物在 ./dist
 
+      - name: Debug dist structure (for troubleshooting)
+        run: |
+          echo "=== DIST DIRECTORY STRUCTURE ==="
+          ls -R dist
+          echo "=== FILE SIZES ==="
+          find dist -type f -exec ls -lh {} \;
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
