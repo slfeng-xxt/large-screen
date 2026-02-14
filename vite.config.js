@@ -36,9 +36,6 @@ export default defineConfig(({ command, mode }) => {
           globalsPropValue: true, // 支持全局变量
         },
       }),
-      autoprefixer({
-        overrideBrowserslist: ['> 1%', 'last 2 versions', 'not dead'],
-      }),
       viteMockServe({
         mockPath: './src/mock',
         localEnabled: command === 'serve', // 仅在开发环境启用 Mock
@@ -81,6 +78,13 @@ export default defineConfig(({ command, mode }) => {
       chunkSizeWarningLimit: 1000, // 设置 chunk 大小警告的限制，单位为 kbs
     },
     css: {
+      postcss: {
+        plugins: [
+          autoprefixer({
+            overrideBrowserslist: ['> 1%', 'last 2 versions', 'not dead'],
+          }),
+        ],
+      },
       preprocessorOptions: {
         less: {
           javascriptEnabled: true, // 支持内联 JavaScript
