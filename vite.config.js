@@ -2,7 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
+// import vueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
 import { viteMockServe } from 'vite-plugin-mock'
 // import zipPack from 'vite-plugin-zip-pack'
@@ -27,7 +27,7 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [
       vue(),
-      vueDevTools(),
+      // vueDevTools(),
       AutoImport({
         imports: ['vue', 'vue-router', 'pinia'],
         dts: 'src/auto-imports.d.ts', // 生成 `auto-imports.d.ts` 文件
