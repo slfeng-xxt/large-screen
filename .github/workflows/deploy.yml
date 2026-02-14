@@ -47,7 +47,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist  # 👈 直接上传 dist 目录
+          path: ./large-screen/dist  # 👈 直接上传 dist 目录
 
   deploy:
     environment:
