@@ -43,6 +43,10 @@ jobs:
       - name: Build project
         run: pnpm build
 
+      # GitHub Pages 无 SPA 回退，复制 index 为 404 使子路由/刷新可用
+      - name: Prepare 404 for SPA
+        run: cp ./dist/index.html ./dist/404.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
