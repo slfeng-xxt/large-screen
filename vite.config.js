@@ -12,6 +12,7 @@ import autoprefixer from 'autoprefixer'
 export default defineConfig(({ command, mode }) => {
   console.log('🚀 ~ defineConfig ~ command, mode:', command, mode)
   return {
+    base: '/large-screen/',
     server: {
       port: '3000',
       proxy: {
