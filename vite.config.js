@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
 import { viteMockServe } from 'vite-plugin-mock'
-import zipPack from 'vite-plugin-zip-pack'
+// import zipPack from 'vite-plugin-zip-pack'
 import autoprefixer from 'autoprefixer'
 
 // https://vite.dev/config/
@@ -43,11 +43,11 @@ export default defineConfig(({ command, mode }) => {
         injectCode:
           'import { setupProdMockServer } from "@/utils/mock-prod-server.js"; setupProdMockServer();',
       }),
-      zipPack({
-        inDir: 'dist',
-        outDir: './',
-        pathPrefix: 'dist',
-      }),
+      // zipPack({
+      //   inDir: 'dist',
+      //   outDir: './',
+      //   pathPrefix: 'dist',
+      // }),
     ],
     resolve: {
       alias: {
